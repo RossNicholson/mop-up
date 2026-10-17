@@ -1,12 +1,12 @@
-# Draft cask for RossNicholson/homebrew-tap (Casks/mopup.rb). Add it to the tap
-# before the first release: release.sh bumps version + sha256 in place.
+# The cask for RossNicholson/homebrew-tap (Casks/mopup.rb). The first release
+# copies it into the tap; every release then bumps version and sha256 there.
 cask "mopup" do
   version "1.0.0"
   sha256 "0000000000000000000000000000000000000000000000000000000000000000"
 
   url "https://github.com/RossNicholson/mop-up/releases/download/v#{version}/MopUp-#{version}.dmg"
   name "Mop Up"
-  desc "Clean, uninstall and tune up your Mac"
+  desc "Disk cleaner and app uninstaller"
   homepage "https://github.com/RossNicholson/mop-up"
 
   depends_on macos: :sonoma

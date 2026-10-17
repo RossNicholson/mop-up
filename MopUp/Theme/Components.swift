@@ -2,8 +2,15 @@ import SwiftUI
 
 // MARK: - Buttons
 
+extension EnvironmentValues {
+    /// True inside a pastel card. Pastels look the same in light and dark
+    /// mode, so buttons on them keep their light-mode ink colours.
+    @Entry var onPastel = false
+}
+
 /// The dark pill with an icon in a coloured circle: the main action on a screen
 struct PillButton: View {
+    @Environment(\.onPastel) private var onPastel
     let title: String
     var symbol: String = "arrow.right"
     var circle: Color = AppColors.mint
@@ -22,11 +29,11 @@ struct PillButton: View {
                     .frame(width: 24, height: 24)
                     .background(destructive ? AppColors.coral : circle, in: Circle())
             }
-            .foregroundStyle(AppColors.onSolid)
+            .foregroundStyle(onPastel ? Color.white : AppColors.onSolid)
             .padding(.leading, 18)
             .padding(.trailing, 7)
             .padding(.vertical, 7)
-            .background(AppColors.solid, in: Capsule())
+            .background(onPastel ? AppColors.ink : AppColors.solid, in: Capsule())
             .contentShape(Capsule())
         }
         .buttonStyle(PressableStyle())
@@ -35,6 +42,7 @@ struct PillButton: View {
 
 /// A quieter outlined pill for secondary actions ("Scan again", "Cancel")
 struct GhostButton: View {
+    @Environment(\.onPastel) private var onPastel
     let title: String
     var symbol: String? = nil
     let action: () -> Void
@@ -48,11 +56,11 @@ struct GhostButton: View {
                 Text(title)
                     .font(.mono(11, weight: .medium))
             }
-            .foregroundStyle(AppColors.text)
+            .foregroundStyle(onPastel ? AppColors.ink : AppColors.text)
             .padding(.horizontal, 14)
             .padding(.vertical, 8)
-            .background(AppColors.surface, in: Capsule())
-            .overlay(Capsule().strokeBorder(AppColors.hairline))
+            .background(onPastel ? Color.white.opacity(0.7) : AppColors.surface, in: Capsule())
+            .overlay(Capsule().strokeBorder(onPastel ? Color.clear : AppColors.hairline))
             .contentShape(Capsule())
         }
         .buttonStyle(PressableStyle())
@@ -184,6 +192,7 @@ extension View {
     /// A pastel block; text on it is always ink
     func pastelCard(_ fill: Color, radius: CGFloat = 24) -> some View {
         foregroundStyle(AppColors.ink)
+            .environment(\.onPastel, true)
             .background(fill, in: RoundedRectangle(cornerRadius: radius, style: .continuous))
     }
 }

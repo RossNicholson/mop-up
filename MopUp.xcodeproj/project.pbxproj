@@ -23,6 +23,7 @@
 		674A9582065F4E92C98FEF60 /* BarlowCondensed-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 05EEE683624059E39D9C1F09 /* BarlowCondensed-Bold.ttf */; };
 		75F7074306199AE772A728DC /* GeistMono-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 52A084ECDC41952BB8E00C45 /* GeistMono-SemiBold.ttf */; };
 		7A56E8DE9E36BB9D01911B4A /* BarlowCondensed-OFL.txt in Resources */ = {isa = PBXBuildFile; fileRef = 53E5F1A4910DD9719C3BBA48 /* BarlowCondensed-OFL.txt */; };
+		7EDFA72B1A93E98CA8B5A674 /* ScreenshotTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 432453F5EDD094D67AD80DD8 /* ScreenshotTests.swift */; };
 		7F48421F820A2278B8AD3811 /* UninstallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4867FA99848802F9A58620 /* UninstallView.swift */; };
 		82CB21214A5FF0C908341DBC /* EngineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F7BA3271834D7677E9F4857 /* EngineTests.swift */; };
 		8970E050FB74F4D7B956CC00 /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D817DB37BFBB8374F2658C85 /* AboutView.swift */; };
@@ -35,6 +36,7 @@
 		D1DDCCE67F5BE3012E4EB4EF /* HistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80E827B87A30900F99762160 /* HistoryView.swift */; };
 		D5C944E405353BF330036206 /* ReportParserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEF7BFDC2E130C907F3BDA45 /* ReportParserTests.swift */; };
 		E49E57D781D641ED86F4E0A2 /* SpaceModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA17EC05495C9A007F6CE951 /* SpaceModelTests.swift */; };
+		E8DA76B033BFAB6F6B59C011 /* Demo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CFF4C3E9F20690457170721 /* Demo.swift */; };
 		F237E5BCF1758E38BE9B2956 /* MenuBarPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C974867B7C8D7A21A9DE2400 /* MenuBarPanel.swift */; };
 /* End PBXBuildFile section */
 
@@ -59,12 +61,14 @@
 		3E080A6BEE9576DABBB9BBD3 /* MopUp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MopUp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3FF245829E7BFC32336E8468 /* MoleModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoleModels.swift; sourceTree = "<group>"; };
 		40EB3B74500128B8ABC6A475 /* MoleEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoleEngine.swift; sourceTree = "<group>"; };
+		432453F5EDD094D67AD80DD8 /* ScreenshotTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenshotTests.swift; sourceTree = "<group>"; };
 		47BA10E8BC848A2BA593FEE9 /* Mascot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mascot.swift; sourceTree = "<group>"; };
 		50D5C703D30B88588F44E5F0 /* MopUp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MopUp.entitlements; sourceTree = "<group>"; };
 		52A084ECDC41952BB8E00C45 /* GeistMono-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "GeistMono-SemiBold.ttf"; sourceTree = "<group>"; };
 		53E5F1A4910DD9719C3BBA48 /* BarlowCondensed-OFL.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = "BarlowCondensed-OFL.txt"; sourceTree = "<group>"; };
 		6BF9A680C962106959374F0A /* MoleReports.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoleReports.swift; sourceTree = "<group>"; };
 		6C7A96D9FAD28D14345C0CFE /* TuneUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TuneUpView.swift; sourceTree = "<group>"; };
+		7CFF4C3E9F20690457170721 /* Demo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Demo.swift; sourceTree = "<group>"; };
 		80E827B87A30900F99762160 /* HistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryView.swift; sourceTree = "<group>"; };
 		986FC7A246E8F11B7DCD4830 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		9E4A27DDD63D041840482A29 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
@@ -90,6 +94,7 @@
 			children = (
 				2F7BA3271834D7677E9F4857 /* EngineTests.swift */,
 				FEF7BFDC2E130C907F3BDA45 /* ReportParserTests.swift */,
+				432453F5EDD094D67AD80DD8 /* ScreenshotTests.swift */,
 				BA17EC05495C9A007F6CE951 /* SpaceModelTests.swift */,
 			);
 			path = MopUpTests;
@@ -181,6 +186,7 @@
 			isa = PBXGroup;
 			children = (
 				E261173BB4E4649403B2C904 /* AppState.swift */,
+				7CFF4C3E9F20690457170721 /* Demo.swift */,
 				2ECBDDF051597B1CB81928C1 /* FeatureModels.swift */,
 			);
 			path = Models;
@@ -320,6 +326,7 @@
 				BC68AF5BBD44A47122EB4874 /* AppState.swift in Sources */,
 				1092EF3C6A72FA07AD96C2E7 /* CleanView.swift in Sources */,
 				66A39F054A42E694736E4C89 /* Components.swift in Sources */,
+				E8DA76B033BFAB6F6B59C011 /* Demo.swift in Sources */,
 				28AD130DE9B0427EFEFF4C5E /* FeatureModels.swift in Sources */,
 				D1DDCCE67F5BE3012E4EB4EF /* HistoryView.swift in Sources */,
 				BD56EE8261126DC0B79BC261 /* HomeView.swift in Sources */,
@@ -343,6 +350,7 @@
 			files = (
 				82CB21214A5FF0C908341DBC /* EngineTests.swift in Sources */,
 				D5C944E405353BF330036206 /* ReportParserTests.swift in Sources */,
+				7EDFA72B1A93E98CA8B5A674 /* ScreenshotTests.swift in Sources */,
 				E49E57D781D641ED86F4E0A2 /* SpaceModelTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

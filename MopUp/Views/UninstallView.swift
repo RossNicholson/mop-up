@@ -204,6 +204,7 @@ private struct SelectionBar: View {
             }
         }
         .foregroundStyle(AppColors.ink)
+        .environment(\.onPastel, true)
         .padding(.horizontal, 22)
         .padding(.vertical, 14)
         .background(AppColors.periwinkle)

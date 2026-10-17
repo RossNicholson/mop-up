@@ -6,6 +6,14 @@ import Observation
 @MainActor
 @Observable
 final class StatusModel {
+    #if DEBUG
+    func loadDemo(_ status: SystemStatus) {
+        self.status = status
+        isDemo = true
+    }
+    private var isDemo = false
+    #endif
+
     private(set) var status: SystemStatus?
     private(set) var error: String?
     private let engine: MoleEngine
@@ -18,6 +26,9 @@ final class StatusModel {
 
     /// Streams fresh numbers every few seconds while anyone is watching
     func startWatching(_ who: String = "home") {
+        #if DEBUG
+        if isDemo { return }
+        #endif
         watchers.insert(who)
         guard watcher == nil else { return }
         watcher = Task { [engine] in
@@ -45,6 +56,9 @@ final class StatusModel {
     /// A slow refresh for the menu bar's free-space figure, skipped while a
     /// live stream is already running
     func startPolling(every seconds: Int = 60) {
+        #if DEBUG
+        if isDemo { return }
+        #endif
         guard poller == nil else { return }
         poller = Task {
             while !Task.isCancelled {
@@ -72,6 +86,10 @@ final class StatusModel {
 @MainActor
 @Observable
 final class CleanModel {
+    #if DEBUG
+    func loadDemo(_ phase: Phase) { self.phase = phase }
+    #endif
+
     enum Phase {
         case idle
         case scanning
@@ -163,6 +181,10 @@ final class CleanModel {
 @MainActor
 @Observable
 final class TuneUpModel {
+    #if DEBUG
+    func loadDemo(_ phase: Phase) { self.phase = phase }
+    #endif
+
     enum Phase {
         case idle
         case working(preview: Bool)
@@ -225,6 +247,13 @@ final class TuneUpModel {
 @MainActor
 @Observable
 final class UninstallModel {
+    #if DEBUG
+    func loadDemo(_ apps: [InstalledApp], selected: [String]) {
+        self.apps = apps
+        selection = Set(apps.filter { selected.contains($0.name) }.map(\.id))
+    }
+    #endif
+
     enum Phase {
         case browsing
         case planning
@@ -334,6 +363,10 @@ final class UninstallModel {
 @MainActor
 @Observable
 final class SpaceModel {
+    #if DEBUG
+    func loadDemo(_ scan: DiskScan) { scans[Self.overviewKey] = scan }
+    #endif
+
     /// Folders the user has opened, starting from the overview (nil)
     private(set) var trail: [String?] = [nil]
     private(set) var scans: [String: DiskScan] = [:]
@@ -456,6 +489,14 @@ enum MoleCache {
 @MainActor
 @Observable
 final class HistoryModel {
+    #if DEBUG
+    func loadDemo(_ sessions: [CleanupHistory.Session]) {
+        self.sessions = sessions
+        isDemo = true
+    }
+    private var isDemo = false
+    #endif
+
     private(set) var sessions: [CleanupHistory.Session] = []
     private(set) var isLoading = false
     private(set) var error: String?
@@ -464,6 +505,9 @@ final class HistoryModel {
     init(engine: MoleEngine) { self.engine = engine }
 
     func load() async {
+        #if DEBUG
+        if isDemo { return }
+        #endif
         isLoading = true
         defer { isLoading = false }
         do {

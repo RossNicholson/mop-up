@@ -18,6 +18,10 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
         // Don't open windows or start polling when hosting unit tests
         guard ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] == nil else { return }
 
+        #if DEBUG
+        // `-demo YES`: sample data for screenshots, no engine calls
+        if UserDefaults.standard.bool(forKey: "demo") { state.loadDemo() }
+        #endif
         applySettings()
         // Opened at login: start quietly in the menu bar
         if state.settings.showInMenuBar, Self.launchedAtLogin {

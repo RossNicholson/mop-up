@@ -45,7 +45,7 @@ struct AboutView: View {
                         .font(.mono(11))
                         .opacity(0.8)
                     HStack(spacing: 14) {
-                        MonoLink(title: "Website", destination: URL(string: "https://rossnicholson.dev")!)
+                        MonoLink(title: "Website", destination: URL(string: "https://rossnicholson.dev/mopup")!)
                         MonoLink(title: "Source code", destination: URL(string: "https://github.com/RossNicholson/mop-up")!)
                     }
                     .padding(.top, 4)

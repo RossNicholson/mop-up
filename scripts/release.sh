@@ -151,9 +151,15 @@ if [[ ! -d "$TAP" ]]; then
   git clone "https://x-access-token:${TAP_PUSH_TOKEN}@github.com/RossNicholson/homebrew-tap.git" "$TAP"
 fi
 CASKFILE="$TAP/Casks/$CASK.rb"
+if [[ ! -f "$CASKFILE" && -f "docs/$CASK.rb" ]]; then
+  # First release: add the cask from docs/ (its header comment is for this repo only)
+  mkdir -p "$TAP/Casks"
+  grep -v '^#' "docs/$CASK.rb" > "$CASKFILE"
+  git -C "$TAP" add "Casks/$CASK.rb"
+fi
 [[ -f "$CASKFILE" ]] || fail "cask not found: $CASKFILE"
 /usr/bin/sed -i '' -E "s/^  version \".*\"/  version \"$VERSION\"/; s/^  sha256 \".*\"/  sha256 \"$SHA\"/" "$CASKFILE"
-if ! git -C "$TAP" diff --quiet -- "Casks/$CASK.rb"; then
+if ! git -C "$TAP" diff --quiet -- "Casks/$CASK.rb" || ! git -C "$TAP" diff --cached --quiet -- "Casks/$CASK.rb"; then
   git -C "$TAP" add "Casks/$CASK.rb"
   git -C "$TAP" commit -m "Bump $CASK to v$VERSION"
   git -C "$TAP" push origin main

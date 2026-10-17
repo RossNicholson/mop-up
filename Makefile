@@ -1,4 +1,4 @@
-.PHONY: release build test vendor run
+.PHONY: release build test vendor run screenshots
 
 # Ship a release: bump version, commit, tag, push -> CI builds/notarizes/publishes.
 #   make release VERSION=1.2.3
@@ -30,3 +30,10 @@ run:
 	@pkill -x "Mop Up" || true
 	@sleep 1
 	@open "build/dd/Build/Products/Debug/Mop Up.app"
+
+# Render the website screenshots (demo data, light and dark) into build/screenshots.
+screenshots:
+	@xcodegen generate >/dev/null && TEST_RUNNER_MOPUP_SCREENSHOTS="$(CURDIR)/build/screenshots" \
+		xcodebuild test -project MopUp.xcodeproj -scheme MopUp -destination 'platform=macOS' \
+		CODE_SIGNING_ALLOWED=NO -only-testing:MopUpTests/ScreenshotTests -quiet
+	@echo "Screenshots in build/screenshots"
