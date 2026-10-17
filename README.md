@@ -14,7 +14,7 @@ Mop Up is a native SwiftUI app for macOS 14 and later. Its cleaning engine is [M
 - **Tune Up**: refreshes Finder, Spotlight and network caches, checks preferences and login items and repairs what it safely can. You can check first without changing anything.
 - **Disk Space**: the biggest places on your Mac. Open folders to look inside, show items in Finder or move them to the Trash.
 - **History**: every clean-up, uninstall and tune-up.
-- **Menu bar**: free space at a glance, with a panel showing health, memory and processor and shortcuts to clean up, uninstall, tune up or check disk space. Closing the window keeps Mop Up in the menu bar; it can also open at login. Both are in Settings.
+- **Menu bar**: free space at a glance, with a panel showing health, memory and processor and shortcuts to clean up, uninstall, tune up or check disk space. Drag the grip in the panel's bottom-right corner to make it bigger. Closing the window keeps Mop Up in the menu bar; it can also open at login. Both are in Settings.
 
 ## Install
 
