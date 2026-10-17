@@ -62,7 +62,7 @@ private struct HistoryRow: View {
         }
         .padding(.horizontal, 14)
         .padding(.vertical, 10)
-        .card(radius: 16)
+        .card(radius: Radius.block)
         .accessibilityElement(children: .combine)
     }
 

@@ -33,7 +33,7 @@ run:
 
 # Render the website screenshots (demo data, light and dark) into build/screenshots.
 screenshots:
-	@xcodegen generate >/dev/null && TEST_RUNNER_MOPUP_SCREENSHOTS="$(CURDIR)/build/screenshots" \
+	@xcodegen generate >/dev/null && SCREENSHOTS="$(CURDIR)/build/screenshots" TEST_RUNNER_SCREENSHOTS="$(CURDIR)/build/screenshots" \
 		xcodebuild test -project MopUp.xcodeproj -scheme MopUp -destination 'platform=macOS' \
 		CODE_SIGNING_ALLOWED=NO -only-testing:MopUpTests/ScreenshotTests -quiet
 	@echo "Screenshots in build/screenshots"

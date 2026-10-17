@@ -23,6 +23,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
         if UserDefaults.standard.bool(forKey: "demo") { state.loadDemo() }
         #endif
         applySettings()
+        Task { await state.updater.checkSilent() }
         // Opened at login: start quietly in the menu bar
         if state.settings.showInMenuBar, Self.launchedAtLogin {
             NSApp.setActivationPolicy(.accessory)

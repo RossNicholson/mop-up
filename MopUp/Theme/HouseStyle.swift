@@ -1,4 +1,9 @@
-// The shared look (colours, fonts, buttons, cards, the resize grip) lives in
-// the HouseStyle package, shared with Ross's other Mac apps. Re-exported so
-// every file here can use it without its own import.
+// The shared look (colours, fonts, buttons, cards, the menu bar panel and the
+// updater) lives in the HouseStyle package, shared with Ross's other Mac apps.
+// Re-exported so every file here can use it without its own import.
 @_exported import HouseStyle
+
+extension AppInfo {
+    static let mopUp = AppInfo(name: "Mop Up", repo: "mop-up", cask: "mopup",
+                               coffeeLine: "If Mop Up keeps your Mac tidy")
+}

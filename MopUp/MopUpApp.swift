@@ -158,7 +158,7 @@ struct FullDiskAccessBanner: View {
                 }
             }
             .padding(16)
-            .pastelCard(AppColors.lilac, radius: 20)
+            .pastelCard(AppColors.lilac, radius: Radius.window)
         }
     }
 }

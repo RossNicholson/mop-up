@@ -5,30 +5,26 @@ import SwiftUI
 struct MenuBarPanel: View {
     @Environment(AppState.self) private var state
     let close: () -> Void
-    /// Remembers the size after the corner grip is dragged
-    var onResized: ((NSSize) -> Void)? = nil
-    /// False for the off-screen copy that measures the panel's natural size
-    var flexible = true
+    @State private var showingAbout = false
 
     var body: some View {
         let status = state.status.status
         VStack(alignment: .leading, spacing: 0) {
-            HStack(spacing: 10) {
-                Mascot(mood: state.jobs.isBusy ? .working : .happy, size: 42, disc: AppColors.periwinkle)
-                VStack(alignment: .leading, spacing: 1) {
-                    Text("Mop Up")
-                        .font(.display(28, relativeTo: .largeTitle))
-                        .textCase(.uppercase)
-                        .foregroundStyle(AppColors.text)
-                        .accessibilityAddTraits(.isHeader)
-                    Text(status?.hardware?.model ?? "Your Mac")
-                        .font(.mono(10))
-                        .foregroundStyle(AppColors.secondaryText)
+            PanelHeader(title: "Mop Up", subtitle: status?.hardware?.model ?? "Your Mac") {
+                Mascot(mood: state.jobs.isBusy ? .working : .happy, size: PanelMetrics.mascot,
+                       disc: AppColors.periwinkle)
+            } actions: {
+                HeaderRefreshButton(isRefreshing: state.status.isRefreshing) {
+                    Task { await state.status.refresh() }
                 }
-                Spacer()
-                RefreshButton()
+                HeaderIconButton(symbol: "gearshape", help: "Settings") { open(.about) }
+                HeaderIconButton(symbol: "info", help: "About & help") {
+                    showingAbout.toggle()
+                }
+                .popover(isPresented: $showingAbout, arrowEdge: .bottom) {
+                    AboutPopover(app: .mopUp) { Mascot(mood: .proud, size: 56, disc: AppColors.periwinkle) }
+                }
             }
-            .padding(14)
 
             VStack(spacing: 8) {
                 if let job = state.jobs.running {
@@ -40,7 +36,7 @@ struct MenuBarPanel: View {
                         Spacer()
                     }
                     .padding(12)
-                    .pastelCard(AppColors.mint, radius: 16)
+                    .pastelCard(AppColors.mint, radius: Radius.block)
                 }
 
                 if let disk = status?.mainDisk {
@@ -62,7 +58,7 @@ struct MenuBarPanel: View {
                             .opacity(0.8)
                     }
                     .padding(14)
-                    .pastelCard(AppColors.butter, radius: 18)
+                    .pastelCard(AppColors.butter, radius: Radius.block)
 
                     HStack(spacing: 8) {
                         MiniStat(label: "Health", value: status?.healthScore.map(String.init) ?? "–")
@@ -78,7 +74,7 @@ struct MenuBarPanel: View {
                         Spacer()
                     }
                     .padding(14)
-                    .card(radius: 16)
+                    .card(radius: Radius.row)
                 }
 
                 PillButton(title: "Clean up my Mac", symbol: "sparkles", circle: AppColors.peach) {
@@ -95,33 +91,16 @@ struct MenuBarPanel: View {
                     QuickButton(section: .space) { open(.space) }
                 }
             }
-            .padding(.horizontal, 14)
+            .padding(.horizontal, PanelMetrics.inset)
             .padding(.bottom, 12)
 
             // When the panel is made bigger, the extra room goes here
             Spacer(minLength: 0)
-            Divider().overlay(AppColors.hairline)
-            HStack {
-                Button("Open Mop Up") { open(nil) }
-                Spacer()
-                Button("Settings") { open(.about) }
-                Text("·").foregroundStyle(AppColors.secondaryText)
-                Button("Quit") { NSApp.terminate(nil) }
+            PanelFooter {
+                FooterButton(title: "Open Mop Up", symbol: "arrow.up.right") { open(nil) }
             }
-            .buttonStyle(.plain)
-            .font(.mono(10.5, weight: .medium))
-            .foregroundStyle(AppColors.text)
-            .padding(.leading, 14)
-            .padding(.trailing, 24)   // clear of the resize grip in the corner
-            .padding(.vertical, 10)
         }
-        .frame(minWidth: 300, maxWidth: flexible ? .infinity : 300,
-               maxHeight: flexible ? .infinity : nil, alignment: .top)
-        .background(AppColors.ground)
-        .overlay(alignment: .bottomTrailing) {
-            ResizeGrip(onResized: onResized)
-                .padding(3)
-        }
+        .menuBarPanel()
     }
 
     private func open(_ section: AppSection?) {
@@ -151,7 +130,7 @@ private struct MiniStat: View {
         .padding(.horizontal, 10)
         .padding(.vertical, 8)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .card(radius: 12)
+        .card(radius: Radius.small)
         .accessibilityElement(children: .combine)
     }
 }
@@ -171,8 +150,8 @@ private struct QuickButton: View {
             .foregroundStyle(AppColors.ink)
             .frame(maxWidth: .infinity)
             .padding(.vertical, 8)
-            .background(section.tint, in: RoundedRectangle(cornerRadius: 12, style: .continuous))
-            .contentShape(RoundedRectangle(cornerRadius: 12))
+            .background(section.tint, in: RoundedRectangle(cornerRadius: Radius.small, style: .continuous))
+            .contentShape(RoundedRectangle(cornerRadius: Radius.small))
         }
         .buttonStyle(PressableStyle())
     }

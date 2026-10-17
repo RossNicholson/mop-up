@@ -64,7 +64,7 @@ struct IntroCard: View {
             .frame(maxWidth: .infinity, alignment: .leading)
         }
         .padding(26)
-        .pastelCard(fill, radius: 28)
+        .pastelCard(fill, radius: Radius.hero)
     }
 }
 
@@ -108,7 +108,7 @@ private struct CleanPreview: View {
                 }
             }
             .padding(24)
-            .pastelCard(AppColors.peach, radius: 28)
+            .pastelCard(AppColors.peach, radius: Radius.hero)
 
             Text("Running apps keep their caches until they're closed. Apps rebuild caches as they need them, so cleaning is safe, though some may feel a little slower the first time you open them.")
                 .font(.mono(10.5))
@@ -233,7 +233,7 @@ private struct CleanSectionCard: View {
                         }
                     }
                     .padding(10)
-                    .background(AppColors.ground, in: RoundedRectangle(cornerRadius: 10, style: .continuous))
+                    .background(AppColors.ground, in: RoundedRectangle(cornerRadius: Radius.small, style: .continuous))
                     .padding(.top, 6)
                 }
             }
@@ -347,7 +347,7 @@ private struct CleanDone: View {
             .frame(maxWidth: .infinity, alignment: .leading)
         }
         .padding(26)
-        .pastelCard(AppColors.mint, radius: 28)
+        .pastelCard(AppColors.mint, radius: Radius.hero)
         .task { await state.status.refresh() }
     }
 }

@@ -71,7 +71,7 @@ private struct TuneUpSummary: View {
             .frame(maxWidth: .infinity, alignment: .leading)
         }
         .padding(26)
-        .pastelCard(AppColors.mint, radius: 28)
+        .pastelCard(AppColors.mint, radius: Radius.hero)
     }
 }
 
@@ -104,7 +104,7 @@ private struct TuneUpChecks: View {
                 }
                 .padding(14)
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-                .card(radius: 16)
+                .card(radius: Radius.block)
             }
         }
     }

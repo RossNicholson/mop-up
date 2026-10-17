@@ -66,8 +66,8 @@ private struct SearchField: View {
         .padding(.horizontal, 12)
         .padding(.vertical, 8)
         .frame(width: 220)
-        .background(AppColors.surface, in: Capsule())
-        .overlay(Capsule().strokeBorder(focused ? AppColors.solid : AppColors.hairline))
+        .background(AppColors.surface, in: Capsule(style: .circular))
+        .overlay(Capsule(style: .circular).strokeBorder(focused ? AppColors.solid : AppColors.hairline))
         .contentShape(Capsule())
         .onTapGesture { focused = true }
     }
@@ -105,7 +105,7 @@ private struct AppList: View {
                     }
                 }
                 .padding(2)
-                .background(AppColors.surface, in: Capsule())
+                .background(AppColors.surface, in: Capsule(style: .circular))
                 RoundIconButton(symbol: "arrow.clockwise", size: 24, fill: AppColors.surface, foreground: AppColors.text, help: "Refresh") {
                     Task { await model.load() }
                 }
@@ -163,12 +163,12 @@ private struct AppRow: View {
             }
             .padding(.horizontal, 14)
             .padding(.vertical, 9)
-            .card(hovered: hovered, radius: 16)
+            .card(hovered: hovered, radius: Radius.block)
             .overlay(
-                RoundedRectangle(cornerRadius: 16, style: .continuous)
+                RoundedRectangle(cornerRadius: Radius.block, style: .continuous)
                     .strokeBorder(selected ? AppColors.toggle : .clear, lineWidth: 1.5)
             )
-            .contentShape(RoundedRectangle(cornerRadius: 16))
+            .contentShape(RoundedRectangle(cornerRadius: Radius.block))
         }
         .buttonStyle(.plain)
         .onHover { hovered = $0 }
@@ -244,7 +244,7 @@ private struct UninstallConfirmSheet: View {
                     }
                 }
                 .padding(14)
-                .pastelCard(AppColors.butter, radius: 16)
+                .pastelCard(AppColors.butter, radius: Radius.block)
             }
 
             ScrollView {
@@ -279,7 +279,7 @@ private struct UninstallConfirmSheet: View {
                             }
                         }
                         .padding(14)
-                        .card(radius: 14)
+                        .card(radius: Radius.row)
                     }
                 }
             }
@@ -333,7 +333,7 @@ private struct UninstallDone: View {
             .frame(maxWidth: .infinity, alignment: .leading)
         }
         .padding(26)
-        .pastelCard(AppColors.mint, radius: 28)
+        .pastelCard(AppColors.mint, radius: Radius.hero)
     }
 }
 

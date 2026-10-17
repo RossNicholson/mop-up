@@ -187,8 +187,8 @@ private struct SpaceRow: View {
         }
         .padding(.horizontal, 14)
         .padding(.vertical, 10)
-        .card(hovered: hovered, radius: 16)
-        .contentShape(RoundedRectangle(cornerRadius: 16))
+        .card(hovered: hovered, radius: Radius.block)
+        .contentShape(RoundedRectangle(cornerRadius: Radius.block))
         .onHover { hovered = $0 }
         .onTapGesture(count: 2) {
             if entry.isDir && !isApp { Task { await state.space.open(entry.path) } }

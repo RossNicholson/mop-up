@@ -230,8 +230,8 @@ private struct JobCard: View {
             }
             .padding(18)
             .frame(maxWidth: .infinity, minHeight: 104, alignment: .topLeading)
-            .pastelCard(section.tint, radius: 22)
-            .contentShape(RoundedRectangle(cornerRadius: 22))
+            .pastelCard(section.tint, radius: Radius.hero)
+            .contentShape(RoundedRectangle(cornerRadius: Radius.hero))
         }
         .buttonStyle(PressableStyle())
     }

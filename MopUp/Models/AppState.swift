@@ -53,6 +53,8 @@ final class AppState {
     var section: AppSection = .home
     var hasFullDiskAccess = Permissions.hasFullDiskAccess()
     let settings = AppSettings()
+    /// Checks for and installs new versions of Mop Up
+    @ObservationIgnored let updater = SelfUpdater(app: .mopUp)
     /// Opens the main window (on a screen, if given); set by AppDelegate
     @ObservationIgnored var openWindow: ((AppSection?) -> Void)?
 

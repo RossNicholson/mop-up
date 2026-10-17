@@ -11,24 +11,17 @@ struct AboutView: View {
         @Bindable var settings = state.settings
         Screen {
             ScreenHeader(title: "Settings", subtitle: "How Mop Up fits into your Mac.")
-            VStack(spacing: 0) {
-                SettingRow(title: "Show in the menu bar",
-                           detail: "Free space at a glance, with shortcuts to clean up. Closing the window keeps Mop Up running up there.",
-                           isOn: $settings.showInMenuBar)
-                Divider().overlay(AppColors.hairline).padding(.leading, 18)
-                SettingRow(title: "Open at login",
-                           detail: settings.showInMenuBar ? "Start Mop Up quietly in the menu bar when you log in." : "Start Mop Up when you log in.",
-                           isOn: Binding(get: { settings.openAtLoginEnabled }, set: { settings.setOpenAtLogin($0) }))
+            SettingToggle(title: "Show in the menu bar",
+                          detail: "Free space at a glance, with shortcuts to clean up. Closing the window keeps Mop Up running up there.",
+                          isOn: $settings.showInMenuBar)
+            SettingToggle(title: "Open at login",
+                          detail: settings.showInMenuBar ? "Start Mop Up quietly in the menu bar when you log in." : "Start Mop Up when you log in.",
+                          isOn: Binding(get: { settings.openAtLoginEnabled }, set: { settings.setOpenAtLogin($0) })) {
                 if let error = settings.loginError {
-                    Text(error)
-                        .font(.mono(10))
-                        .foregroundStyle(AppColors.destructive)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .padding(.horizontal, 18)
-                        .padding(.bottom, 12)
+                    SettingNote(error)
                 }
             }
-            .card(radius: Radius.window)
+            UpdateBlock(updater: state.updater, app: .mopUp)
 
             SectionLabel(text: "About")
                 .padding(.top, 6)
@@ -53,7 +46,21 @@ struct AboutView: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
             }
             .padding(26)
-            .pastelCard(AppColors.periwinkle, radius: 28)
+            .pastelCard(AppColors.periwinkle, radius: Radius.hero)
+
+            HStack(alignment: .top, spacing: 10) {
+                ColorBlockButton(title: "Get help", detail: "Bugs, questions and feature requests", fill: AppColors.mint) {
+                    NSWorkspace.shared.open(URL(string: "https://rossnicholson.dev/support")!)
+                }
+                ColorBlockButton(title: "Email support", detail: "support@rossnicholson.dev", fill: AppColors.butter,
+                                 symbol: "envelope.fill") {
+                    NSWorkspace.shared.open(URL(string: "mailto:support@rossnicholson.dev")!)
+                }
+                ColorBlockButton(title: "Buy me a coffee", detail: AppInfo.mopUp.coffeeLine, fill: AppColors.peach,
+                                 symbol: "cup.and.saucer.fill") {
+                    NSWorkspace.shared.open(URL(string: "https://buymeacoffee.com/rossnicholson")!)
+                }
+            }
 
             SectionLabel(text: "Powered by Mole")
                 .padding(.top, 4)
@@ -101,30 +108,5 @@ struct AboutView: View {
             .frame(maxWidth: .infinity, alignment: .leading)
             .card(radius: Radius.window)
         }
-    }
-}
-
-private struct SettingRow: View {
-    let title: String
-    let detail: String
-    @Binding var isOn: Bool
-
-    var body: some View {
-        Toggle(isOn: $isOn) {
-            VStack(alignment: .leading, spacing: 3) {
-                Text(title)
-                    .font(.mono(12, weight: .semibold))
-                    .foregroundStyle(AppColors.text)
-                Text(detail)
-                    .font(.mono(10.5))
-                    .foregroundStyle(AppColors.secondaryText)
-                    .fixedSize(horizontal: false, vertical: true)
-            }
-            .frame(maxWidth: .infinity, alignment: .leading)
-        }
-        .toggleStyle(.switch)
-        .tint(AppColors.toggle)
-        .padding(.horizontal, 18)
-        .padding(.vertical, 14)
     }
 }
