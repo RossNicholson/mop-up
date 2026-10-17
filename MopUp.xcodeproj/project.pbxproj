@@ -1,0 +1,573 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		1092EF3C6A72FA07AD96C2E7 /* CleanView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D8C1F39A462696417A272F /* CleanView.swift */; };
+		17AF2764F8A4AC487A2BD565 /* GeistMono-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CADEFDF5DD235ADE7E44AFE5 /* GeistMono-Regular.ttf */; };
+		192F9742DD4B03FE3223123D /* TuneUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C7A96D9FAD28D14345C0CFE /* TuneUpView.swift */; };
+		1C3582C78650DD581D19DA1C /* Mascot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47BA10E8BC848A2BA593FEE9 /* Mascot.swift */; };
+		20D8CE92319FA2E8502F53B3 /* GeistMono-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C9B9A077A26B6A8DED780F4D /* GeistMono-Medium.ttf */; };
+		28AD130DE9B0427EFEFF4C5E /* FeatureModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2ECBDDF051597B1CB81928C1 /* FeatureModels.swift */; };
+		333A6B6E865C0E7F26820316 /* MoleEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40EB3B74500128B8ABC6A475 /* MoleEngine.swift */; };
+		488C01373108A1A5CA055CA9 /* MopUpApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AC5D447BB03743E29070C64 /* MopUpApp.swift */; };
+		5726402723EE119753453467 /* MoleReports.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BF9A680C962106959374F0A /* MoleReports.swift */; };
+		61DFBA38E1D4C0F3915EF2A4 /* MoleModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FF245829E7BFC32336E8468 /* MoleModels.swift */; };
+		66A39F054A42E694736E4C89 /* Components.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCBFA3CCEED760DA28504DE7 /* Components.swift */; };
+		674A9582065F4E92C98FEF60 /* BarlowCondensed-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 05EEE683624059E39D9C1F09 /* BarlowCondensed-Bold.ttf */; };
+		75F7074306199AE772A728DC /* GeistMono-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 52A084ECDC41952BB8E00C45 /* GeistMono-SemiBold.ttf */; };
+		7A56E8DE9E36BB9D01911B4A /* BarlowCondensed-OFL.txt in Resources */ = {isa = PBXBuildFile; fileRef = 53E5F1A4910DD9719C3BBA48 /* BarlowCondensed-OFL.txt */; };
+		7F48421F820A2278B8AD3811 /* UninstallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4867FA99848802F9A58620 /* UninstallView.swift */; };
+		82CB21214A5FF0C908341DBC /* EngineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F7BA3271834D7677E9F4857 /* EngineTests.swift */; };
+		8970E050FB74F4D7B956CC00 /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D817DB37BFBB8374F2658C85 /* AboutView.swift */; };
+		8F3E13754C3F9858BA479C99 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 986FC7A246E8F11B7DCD4830 /* Assets.xcassets */; };
+		9351801AF06278C3FE1A7699 /* GeistMono-OFL.txt in Resources */ = {isa = PBXBuildFile; fileRef = 31FD5ACD2BA0315DA2E963C0 /* GeistMono-OFL.txt */; };
+		9DD5D2FD18B360C591F9AA36 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E4A27DDD63D041840482A29 /* Theme.swift */; };
+		BC68AF5BBD44A47122EB4874 /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = E261173BB4E4649403B2C904 /* AppState.swift */; };
+		BD56EE8261126DC0B79BC261 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF60C0C6A1FCC741E1692E56 /* HomeView.swift */; };
+		C047F534FF0FD2E1C0BFECB1 /* SpaceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAB05073FA8C3239A42B4A4E /* SpaceView.swift */; };
+		D1DDCCE67F5BE3012E4EB4EF /* HistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80E827B87A30900F99762160 /* HistoryView.swift */; };
+		D5C944E405353BF330036206 /* ReportParserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEF7BFDC2E130C907F3BDA45 /* ReportParserTests.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		909053A8D34959800F920B43 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = ADD4F591BE730DBBDAB86BF0 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = EC0AE0D96F028C37F68F13AD;
+			remoteInfo = MopUp;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		05EEE683624059E39D9C1F09 /* BarlowCondensed-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "BarlowCondensed-Bold.ttf"; sourceTree = "<group>"; };
+		0AC5D447BB03743E29070C64 /* MopUpApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MopUpApp.swift; sourceTree = "<group>"; };
+		0C044283857737B8C59688D9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		2ECBDDF051597B1CB81928C1 /* FeatureModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureModels.swift; sourceTree = "<group>"; };
+		2F7BA3271834D7677E9F4857 /* EngineTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EngineTests.swift; sourceTree = "<group>"; };
+		31FD5ACD2BA0315DA2E963C0 /* GeistMono-OFL.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = "GeistMono-OFL.txt"; sourceTree = "<group>"; };
+		3E080A6BEE9576DABBB9BBD3 /* MopUp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MopUp.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		3FF245829E7BFC32336E8468 /* MoleModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoleModels.swift; sourceTree = "<group>"; };
+		40EB3B74500128B8ABC6A475 /* MoleEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoleEngine.swift; sourceTree = "<group>"; };
+		47BA10E8BC848A2BA593FEE9 /* Mascot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mascot.swift; sourceTree = "<group>"; };
+		50D5C703D30B88588F44E5F0 /* MopUp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MopUp.entitlements; sourceTree = "<group>"; };
+		52A084ECDC41952BB8E00C45 /* GeistMono-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "GeistMono-SemiBold.ttf"; sourceTree = "<group>"; };
+		53E5F1A4910DD9719C3BBA48 /* BarlowCondensed-OFL.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = "BarlowCondensed-OFL.txt"; sourceTree = "<group>"; };
+		6BF9A680C962106959374F0A /* MoleReports.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoleReports.swift; sourceTree = "<group>"; };
+		6C7A96D9FAD28D14345C0CFE /* TuneUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TuneUpView.swift; sourceTree = "<group>"; };
+		80E827B87A30900F99762160 /* HistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryView.swift; sourceTree = "<group>"; };
+		986FC7A246E8F11B7DCD4830 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		9E4A27DDD63D041840482A29 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
+		BAB05073FA8C3239A42B4A4E /* SpaceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpaceView.swift; sourceTree = "<group>"; };
+		C9B9A077A26B6A8DED780F4D /* GeistMono-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "GeistMono-Medium.ttf"; sourceTree = "<group>"; };
+		CADEFDF5DD235ADE7E44AFE5 /* GeistMono-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "GeistMono-Regular.ttf"; sourceTree = "<group>"; };
+		CCBFA3CCEED760DA28504DE7 /* Components.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Components.swift; sourceTree = "<group>"; };
+		CE4867FA99848802F9A58620 /* UninstallView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UninstallView.swift; sourceTree = "<group>"; };
+		D817DB37BFBB8374F2658C85 /* AboutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
+		E261173BB4E4649403B2C904 /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
+		E45D57F79D872CDDCE8FF437 /* MopUpTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MopUpTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		EF60C0C6A1FCC741E1692E56 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		F4D8C1F39A462696417A272F /* CleanView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CleanView.swift; sourceTree = "<group>"; };
+		FEF7BFDC2E130C907F3BDA45 /* ReportParserTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportParserTests.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		0A89BA8D1F6AEEA4212AAFA2 /* MopUpTests */ = {
+			isa = PBXGroup;
+			children = (
+				2F7BA3271834D7677E9F4857 /* EngineTests.swift */,
+				FEF7BFDC2E130C907F3BDA45 /* ReportParserTests.swift */,
+			);
+			path = MopUpTests;
+			sourceTree = "<group>";
+		};
+		112E1710F4E6AE4E48A6CA38 = {
+			isa = PBXGroup;
+			children = (
+				2D6A137D192B4C8BAE9A7FF3 /* MopUp */,
+				0A89BA8D1F6AEEA4212AAFA2 /* MopUpTests */,
+				874F4AB5D00D8995E47458CE /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		2D6A137D192B4C8BAE9A7FF3 /* MopUp */ = {
+			isa = PBXGroup;
+			children = (
+				986FC7A246E8F11B7DCD4830 /* Assets.xcassets */,
+				0C044283857737B8C59688D9 /* Info.plist */,
+				50D5C703D30B88588F44E5F0 /* MopUp.entitlements */,
+				0AC5D447BB03743E29070C64 /* MopUpApp.swift */,
+				B2D74DE331E1754DB95EB0AF /* Engine */,
+				4DD92C9717C25F71FF50DCB3 /* Fonts */,
+				D4549069B30D61B96CE5D747 /* Models */,
+				F861F7724B71FDC98FE0ADA3 /* Theme */,
+				496C5E50506EE3D0E561FB7E /* Views */,
+			);
+			path = MopUp;
+			sourceTree = "<group>";
+		};
+		496C5E50506EE3D0E561FB7E /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				D817DB37BFBB8374F2658C85 /* AboutView.swift */,
+				F4D8C1F39A462696417A272F /* CleanView.swift */,
+				80E827B87A30900F99762160 /* HistoryView.swift */,
+				EF60C0C6A1FCC741E1692E56 /* HomeView.swift */,
+				BAB05073FA8C3239A42B4A4E /* SpaceView.swift */,
+				6C7A96D9FAD28D14345C0CFE /* TuneUpView.swift */,
+				CE4867FA99848802F9A58620 /* UninstallView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		4DD92C9717C25F71FF50DCB3 /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				05EEE683624059E39D9C1F09 /* BarlowCondensed-Bold.ttf */,
+				53E5F1A4910DD9719C3BBA48 /* BarlowCondensed-OFL.txt */,
+				C9B9A077A26B6A8DED780F4D /* GeistMono-Medium.ttf */,
+				31FD5ACD2BA0315DA2E963C0 /* GeistMono-OFL.txt */,
+				CADEFDF5DD235ADE7E44AFE5 /* GeistMono-Regular.ttf */,
+				52A084ECDC41952BB8E00C45 /* GeistMono-SemiBold.ttf */,
+			);
+			path = Fonts;
+			sourceTree = "<group>";
+		};
+		874F4AB5D00D8995E47458CE /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				3E080A6BEE9576DABBB9BBD3 /* MopUp.app */,
+				E45D57F79D872CDDCE8FF437 /* MopUpTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		B2D74DE331E1754DB95EB0AF /* Engine */ = {
+			isa = PBXGroup;
+			children = (
+				40EB3B74500128B8ABC6A475 /* MoleEngine.swift */,
+				3FF245829E7BFC32336E8468 /* MoleModels.swift */,
+				6BF9A680C962106959374F0A /* MoleReports.swift */,
+			);
+			path = Engine;
+			sourceTree = "<group>";
+		};
+		D4549069B30D61B96CE5D747 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				E261173BB4E4649403B2C904 /* AppState.swift */,
+				2ECBDDF051597B1CB81928C1 /* FeatureModels.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		F861F7724B71FDC98FE0ADA3 /* Theme */ = {
+			isa = PBXGroup;
+			children = (
+				CCBFA3CCEED760DA28504DE7 /* Components.swift */,
+				47BA10E8BC848A2BA593FEE9 /* Mascot.swift */,
+				9E4A27DDD63D041840482A29 /* Theme.swift */,
+			);
+			path = Theme;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		4D784FE57718FA39D625CCD6 /* MopUpTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D5F69F4DE3E93CD1FB816225 /* Build configuration list for PBXNativeTarget "MopUpTests" */;
+			buildPhases = (
+				F98F4BC7CCE8065210CA91D5 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				AC0BAED25C14CA3BAE63E6EA /* PBXTargetDependency */,
+			);
+			name = MopUpTests;
+			packageProductDependencies = (
+			);
+			productName = MopUpTests;
+			productReference = E45D57F79D872CDDCE8FF437 /* MopUpTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		EC0AE0D96F028C37F68F13AD /* MopUp */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BF5F7674474E317405195EF5 /* Build configuration list for PBXNativeTarget "MopUp" */;
+			buildPhases = (
+				CF6B7038B62CB23568C4DA1D /* Sources */,
+				4B417FDA10123E8C7B34650D /* Resources */,
+				C399869850C61B47F62EC940 /* Bundle Mole engine */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = MopUp;
+			packageProductDependencies = (
+			);
+			productName = MopUp;
+			productReference = 3E080A6BEE9576DABBB9BBD3 /* MopUp.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		ADD4F591BE730DBBDAB86BF0 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 2600;
+				TargetAttributes = {
+					4D784FE57718FA39D625CCD6 = {
+						DevelopmentTeam = "";
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = 6B21FD4EE96B4D8713C4292D /* Build configuration list for PBXProject "MopUp" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = 112E1710F4E6AE4E48A6CA38;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 874F4AB5D00D8995E47458CE /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				EC0AE0D96F028C37F68F13AD /* MopUp */,
+				4D784FE57718FA39D625CCD6 /* MopUpTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		4B417FDA10123E8C7B34650D /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8F3E13754C3F9858BA479C99 /* Assets.xcassets in Resources */,
+				674A9582065F4E92C98FEF60 /* BarlowCondensed-Bold.ttf in Resources */,
+				7A56E8DE9E36BB9D01911B4A /* BarlowCondensed-OFL.txt in Resources */,
+				20D8CE92319FA2E8502F53B3 /* GeistMono-Medium.ttf in Resources */,
+				9351801AF06278C3FE1A7699 /* GeistMono-OFL.txt in Resources */,
+				17AF2764F8A4AC487A2BD565 /* GeistMono-Regular.ttf in Resources */,
+				75F7074306199AE772A728DC /* GeistMono-SemiBold.ttf in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		C399869850C61B47F62EC940 /* Bundle Mole engine */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Bundle Mole engine";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "set -euo pipefail\n# Fetch + verify the pinned Mole release (no-op when already vendored)\n\"$SRCROOT/scripts/vendor-mole.sh\"\nDEST=\"$TARGET_BUILD_DIR/$UNLOCALIZED_RESOURCES_FOLDER_PATH/mole\"\nmkdir -p \"$DEST\"\nrsync -a --delete \"$SRCROOT/Vendor/mole/\" \"$DEST/\"\n# Mole's Go helpers are Mach-O, so they need their own signature with\n# the hardened runtime. The app bundle itself is signed after this.\nif [ \"${CODE_SIGNING_ALLOWED:-YES}\" = \"YES\" ] && [ -n \"${EXPANDED_CODE_SIGN_IDENTITY:-}\" ]; then\n  TS=\"--timestamp\"\n  [ \"$EXPANDED_CODE_SIGN_IDENTITY\" = \"-\" ] && TS=\"--timestamp=none\"\n  for helper in analyze-go status-go; do\n    codesign --force --options runtime $TS --sign \"$EXPANDED_CODE_SIGN_IDENTITY\" \"$DEST/bin/$helper\"\n  done\nfi\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		CF6B7038B62CB23568C4DA1D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8970E050FB74F4D7B956CC00 /* AboutView.swift in Sources */,
+				BC68AF5BBD44A47122EB4874 /* AppState.swift in Sources */,
+				1092EF3C6A72FA07AD96C2E7 /* CleanView.swift in Sources */,
+				66A39F054A42E694736E4C89 /* Components.swift in Sources */,
+				28AD130DE9B0427EFEFF4C5E /* FeatureModels.swift in Sources */,
+				D1DDCCE67F5BE3012E4EB4EF /* HistoryView.swift in Sources */,
+				BD56EE8261126DC0B79BC261 /* HomeView.swift in Sources */,
+				1C3582C78650DD581D19DA1C /* Mascot.swift in Sources */,
+				333A6B6E865C0E7F26820316 /* MoleEngine.swift in Sources */,
+				61DFBA38E1D4C0F3915EF2A4 /* MoleModels.swift in Sources */,
+				5726402723EE119753453467 /* MoleReports.swift in Sources */,
+				488C01373108A1A5CA055CA9 /* MopUpApp.swift in Sources */,
+				C047F534FF0FD2E1C0BFECB1 /* SpaceView.swift in Sources */,
+				9DD5D2FD18B360C591F9AA36 /* Theme.swift in Sources */,
+				192F9742DD4B03FE3223123D /* TuneUpView.swift in Sources */,
+				7F48421F820A2278B8AD3811 /* UninstallView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F98F4BC7CCE8065210CA91D5 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				82CB21214A5FF0C908341DBC /* EngineTests.swift in Sources */,
+				D5C944E405353BF330036206 /* ReportParserTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		AC0BAED25C14CA3BAE63E6EA /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = EC0AE0D96F028C37F68F13AD /* MopUp */;
+			targetProxy = 909053A8D34959800F920B43 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		05F24A332923A1BFC79BDCCC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = MopUp/MopUp.entitlements;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = MopUp/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.rossnicholson.MopUp;
+				PRODUCT_NAME = "Mop Up";
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		1849A8202212333BBB839E59 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 6.0;
+			};
+			name = Debug;
+		};
+		86BBCE28BC44169ECB78827A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGNING_ALLOWED = NO;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.rossnicholson.MopUpTests;
+				SDKROOT = macosx;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Mop Up.app/Contents/MacOS/Mop Up";
+			};
+			name = Release;
+		};
+		8CB4752176C4DB694E30539E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = MopUp/MopUp.entitlements;
+				CODE_SIGN_IDENTITY = "Developer ID Application";
+				CODE_SIGN_STYLE = Manual;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = 5HQ5V9NP82;
+				ENABLE_HARDENED_RUNTIME = YES;
+				INFOPLIST_FILE = MopUp/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.rossnicholson.MopUp;
+				PRODUCT_NAME = "Mop Up";
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		BE14D672E175D320B3E3AC49 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = "";
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 6.0;
+			};
+			name = Release;
+		};
+		E5407DE31C9D4D16B442F1D1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGNING_ALLOWED = NO;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.rossnicholson.MopUpTests;
+				SDKROOT = macosx;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Mop Up.app/Contents/MacOS/Mop Up";
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		6B21FD4EE96B4D8713C4292D /* Build configuration list for PBXProject "MopUp" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1849A8202212333BBB839E59 /* Debug */,
+				BE14D672E175D320B3E3AC49 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		BF5F7674474E317405195EF5 /* Build configuration list for PBXNativeTarget "MopUp" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				05F24A332923A1BFC79BDCCC /* Debug */,
+				8CB4752176C4DB694E30539E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		D5F69F4DE3E93CD1FB816225 /* Build configuration list for PBXNativeTarget "MopUpTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E5407DE31C9D4D16B442F1D1 /* Debug */,
+				86BBCE28BC44169ECB78827A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = ADD4F591BE730DBBDAB86BF0 /* Project object */;
+}

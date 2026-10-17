@@ -1,0 +1,7 @@
+build/
+DerivedData/
+*.xcuserstate
+xcuserdata/
+.DS_Store
+# Fetched by scripts/vendor-mole.sh at build time
+Vendor/
