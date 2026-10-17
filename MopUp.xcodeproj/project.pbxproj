@@ -14,6 +14,8 @@
 		20D8CE92319FA2E8502F53B3 /* GeistMono-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C9B9A077A26B6A8DED780F4D /* GeistMono-Medium.ttf */; };
 		28AD130DE9B0427EFEFF4C5E /* FeatureModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2ECBDDF051597B1CB81928C1 /* FeatureModels.swift */; };
 		333A6B6E865C0E7F26820316 /* MoleEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40EB3B74500128B8ABC6A475 /* MoleEngine.swift */; };
+		351911918163B660B6015245 /* StatusBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C444D050423C1904E3AC4061 /* StatusBarController.swift */; };
+		3A6AEBA0CAC7A16475BEE746 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12CC377E67E34DB4A93E78BA /* AppDelegate.swift */; };
 		488C01373108A1A5CA055CA9 /* MopUpApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AC5D447BB03743E29070C64 /* MopUpApp.swift */; };
 		5726402723EE119753453467 /* MoleReports.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BF9A680C962106959374F0A /* MoleReports.swift */; };
 		61DFBA38E1D4C0F3915EF2A4 /* MoleModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FF245829E7BFC32336E8468 /* MoleModels.swift */; };
@@ -33,6 +35,7 @@
 		D1DDCCE67F5BE3012E4EB4EF /* HistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80E827B87A30900F99762160 /* HistoryView.swift */; };
 		D5C944E405353BF330036206 /* ReportParserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEF7BFDC2E130C907F3BDA45 /* ReportParserTests.swift */; };
 		E49E57D781D641ED86F4E0A2 /* SpaceModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA17EC05495C9A007F6CE951 /* SpaceModelTests.swift */; };
+		F237E5BCF1758E38BE9B2956 /* MenuBarPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C974867B7C8D7A21A9DE2400 /* MenuBarPanel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,6 +52,7 @@
 		05EEE683624059E39D9C1F09 /* BarlowCondensed-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "BarlowCondensed-Bold.ttf"; sourceTree = "<group>"; };
 		0AC5D447BB03743E29070C64 /* MopUpApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MopUpApp.swift; sourceTree = "<group>"; };
 		0C044283857737B8C59688D9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		12CC377E67E34DB4A93E78BA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2ECBDDF051597B1CB81928C1 /* FeatureModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureModels.swift; sourceTree = "<group>"; };
 		2F7BA3271834D7677E9F4857 /* EngineTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EngineTests.swift; sourceTree = "<group>"; };
 		31FD5ACD2BA0315DA2E963C0 /* GeistMono-OFL.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = "GeistMono-OFL.txt"; sourceTree = "<group>"; };
@@ -66,6 +70,8 @@
 		9E4A27DDD63D041840482A29 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
 		BA17EC05495C9A007F6CE951 /* SpaceModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpaceModelTests.swift; sourceTree = "<group>"; };
 		BAB05073FA8C3239A42B4A4E /* SpaceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpaceView.swift; sourceTree = "<group>"; };
+		C444D050423C1904E3AC4061 /* StatusBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusBarController.swift; sourceTree = "<group>"; };
+		C974867B7C8D7A21A9DE2400 /* MenuBarPanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarPanel.swift; sourceTree = "<group>"; };
 		C9B9A077A26B6A8DED780F4D /* GeistMono-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "GeistMono-Medium.ttf"; sourceTree = "<group>"; };
 		CADEFDF5DD235ADE7E44AFE5 /* GeistMono-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "GeistMono-Regular.ttf"; sourceTree = "<group>"; };
 		CCBFA3CCEED760DA28504DE7 /* Components.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Components.swift; sourceTree = "<group>"; };
@@ -107,6 +113,7 @@
 				0AC5D447BB03743E29070C64 /* MopUpApp.swift */,
 				B2D74DE331E1754DB95EB0AF /* Engine */,
 				4DD92C9717C25F71FF50DCB3 /* Fonts */,
+				D33B1DC4873B91566FD5519E /* MenuBar */,
 				D4549069B30D61B96CE5D747 /* Models */,
 				F861F7724B71FDC98FE0ADA3 /* Theme */,
 				496C5E50506EE3D0E561FB7E /* Views */,
@@ -158,6 +165,16 @@
 				6BF9A680C962106959374F0A /* MoleReports.swift */,
 			);
 			path = Engine;
+			sourceTree = "<group>";
+		};
+		D33B1DC4873B91566FD5519E /* MenuBar */ = {
+			isa = PBXGroup;
+			children = (
+				12CC377E67E34DB4A93E78BA /* AppDelegate.swift */,
+				C974867B7C8D7A21A9DE2400 /* MenuBarPanel.swift */,
+				C444D050423C1904E3AC4061 /* StatusBarController.swift */,
+			);
+			path = MenuBar;
 			sourceTree = "<group>";
 		};
 		D4549069B30D61B96CE5D747 /* Models */ = {
@@ -299,6 +316,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8970E050FB74F4D7B956CC00 /* AboutView.swift in Sources */,
+				3A6AEBA0CAC7A16475BEE746 /* AppDelegate.swift in Sources */,
 				BC68AF5BBD44A47122EB4874 /* AppState.swift in Sources */,
 				1092EF3C6A72FA07AD96C2E7 /* CleanView.swift in Sources */,
 				66A39F054A42E694736E4C89 /* Components.swift in Sources */,
@@ -306,11 +324,13 @@
 				D1DDCCE67F5BE3012E4EB4EF /* HistoryView.swift in Sources */,
 				BD56EE8261126DC0B79BC261 /* HomeView.swift in Sources */,
 				1C3582C78650DD581D19DA1C /* Mascot.swift in Sources */,
+				F237E5BCF1758E38BE9B2956 /* MenuBarPanel.swift in Sources */,
 				333A6B6E865C0E7F26820316 /* MoleEngine.swift in Sources */,
 				61DFBA38E1D4C0F3915EF2A4 /* MoleModels.swift in Sources */,
 				5726402723EE119753453467 /* MoleReports.swift in Sources */,
 				488C01373108A1A5CA055CA9 /* MopUpApp.swift in Sources */,
 				C047F534FF0FD2E1C0BFECB1 /* SpaceView.swift in Sources */,
+				351911918163B660B6015245 /* StatusBarController.swift in Sources */,
 				9DD5D2FD18B360C591F9AA36 /* Theme.swift in Sources */,
 				192F9742DD4B03FE3223123D /* TuneUpView.swift in Sources */,
 				7F48421F820A2278B8AD3811 /* UninstallView.swift in Sources */,

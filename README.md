@@ -14,6 +14,7 @@ Mop Up is a native SwiftUI app for macOS 14 and later. Its cleaning engine is [M
 - **Tune Up**: refreshes Finder, Spotlight and network caches, checks preferences and login items and repairs what it safely can. You can check first without changing anything.
 - **Disk Space**: the biggest places on your Mac. Open folders to look inside, show items in Finder or move them to the Trash.
 - **History**: every clean-up, uninstall and tune-up.
+- **Menu bar**: free space at a glance, with a panel showing health, memory and processor and shortcuts to clean up, uninstall, tune up or check disk space. Closing the window keeps Mop Up in the menu bar; it can also open at login. Both are in Settings.
 
 ## Install
 
@@ -44,6 +45,8 @@ You need Xcode, [XcodeGen](https://github.com/yonaskolb/XcodeGen) and an interne
 xcodegen generate
 open MopUp.xcodeproj
 ```
+
+`make run` builds and opens a development copy signed with the Developer ID, so macOS remembers the permissions you give it between builds (an unsigned or ad-hoc build looks like a new app every time). Without that certificate, build from Xcode as usual.
 
 The build downloads Mole into `Vendor/` (git-ignored), copies it into the app and signs its two Go helpers. `make test` runs the tests; the engine tests run the bundled Mole with read-only commands (status, app list, previews) and never delete anything.
 

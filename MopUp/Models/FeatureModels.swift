@@ -10,11 +10,15 @@ final class StatusModel {
     private(set) var error: String?
     private let engine: MoleEngine
     private var watcher: Task<Void, Never>?
+    private var poller: Task<Void, Never>?
+    /// Who wants live numbers right now (Home, the menu bar panel)
+    private var watchers: Set<String> = []
 
     init(engine: MoleEngine) { self.engine = engine }
 
-    /// Streams fresh numbers every few seconds while Home is on screen
-    func startWatching() {
+    /// Streams fresh numbers every few seconds while anyone is watching
+    func startWatching(_ who: String = "home") {
+        watchers.insert(who)
         guard watcher == nil else { return }
         watcher = Task { [engine] in
             if status == nil {
@@ -31,9 +35,28 @@ final class StatusModel {
         }
     }
 
-    func stopWatching() {
+    func stopWatching(_ who: String = "home") {
+        watchers.remove(who)
+        guard watchers.isEmpty else { return }
         watcher?.cancel()
         watcher = nil
+    }
+
+    /// A slow refresh for the menu bar's free-space figure, skipped while a
+    /// live stream is already running
+    func startPolling(every seconds: Int = 60) {
+        guard poller == nil else { return }
+        poller = Task {
+            while !Task.isCancelled {
+                if watcher == nil { await refresh() }
+                try? await Task.sleep(for: .seconds(seconds))
+            }
+        }
+    }
+
+    func stopPolling() {
+        poller?.cancel()
+        poller = nil
     }
 
     /// One-off refresh (after a clean, say)

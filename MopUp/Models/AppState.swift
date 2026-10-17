@@ -16,7 +16,7 @@ enum AppSection: String, CaseIterable, Identifiable {
         case .tuneUp: return "Tune Up"
         case .space: return "Disk Space"
         case .history: return "History"
-        case .about: return "About"
+        case .about: return "Settings"
         }
     }
 
@@ -28,7 +28,7 @@ enum AppSection: String, CaseIterable, Identifiable {
         case .tuneUp: return "wrench.and.screwdriver.fill"
         case .space: return "chart.pie.fill"
         case .history: return "clock.arrow.circlepath"
-        case .about: return "info.circle.fill"
+        case .about: return "gearshape.fill"
         }
     }
 
@@ -52,6 +52,9 @@ enum AppSection: String, CaseIterable, Identifiable {
 final class AppState {
     var section: AppSection = .home
     var hasFullDiskAccess = Permissions.hasFullDiskAccess()
+    let settings = AppSettings()
+    /// Opens the main window (on a screen, if given); set by AppDelegate
+    @ObservationIgnored var openWindow: ((AppSection?) -> Void)?
 
     let jobs = JobGate()
     let status: StatusModel

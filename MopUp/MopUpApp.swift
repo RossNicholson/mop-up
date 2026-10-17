@@ -2,28 +2,28 @@ import SwiftUI
 
 @main
 struct MopUpApp: App {
-    @State private var state = AppState()
+    @NSApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
 
     var body: some Scene {
-        Window("Mop Up", id: "main") {
-            ContentView()
-                .environment(state)
-                .frame(minWidth: 860, minHeight: 600)
-        }
-        .windowStyle(.hiddenTitleBar)
-        .defaultSize(width: 1040, height: 720)
-        .commands {
-            CommandGroup(replacing: .appInfo) {
-                Button("About Mop Up") { state.section = .about }
-            }
-            CommandGroup(replacing: .newItem) {}
-            CommandMenu("Go") {
-                ForEach(Array(AppSection.allCases.enumerated()), id: \.element) { index, section in
-                    Button(section.title) { state.section = section }
-                        .keyboardShortcut(KeyEquivalent(Character("\(index + 1)")), modifiers: .command)
+        // The main window and the menu bar item are managed by AppDelegate, so
+        // Mop Up can keep running in the menu bar with its window closed.
+        Settings { EmptyView() }
+            .commands {
+                CommandGroup(replacing: .appInfo) {
+                    Button("About Mop Up") { appDelegate.show(.about) }
+                }
+                CommandGroup(replacing: .newItem) {}
+                CommandGroup(replacing: .appSettings) {
+                    Button("Settings…") { appDelegate.show(.about) }
+                        .keyboardShortcut(",", modifiers: .command)
+                }
+                CommandMenu("Go") {
+                    ForEach(Array(AppSection.allCases.enumerated()), id: \.element) { index, section in
+                        Button(section.title) { appDelegate.show(section) }
+                            .keyboardShortcut(KeyEquivalent(Character("\(index + 1)")), modifiers: .command)
+                    }
                 }
             }
-        }
     }
 }
 

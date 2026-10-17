@@ -1,13 +1,37 @@
 import SwiftUI
 
 struct AboutView: View {
+    @Environment(AppState.self) private var state
     private let engine = MoleEngine.bundled
     private var version: String {
         Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "?"
     }
 
     var body: some View {
+        @Bindable var settings = state.settings
         Screen {
+            ScreenHeader(title: "Settings", subtitle: "How Mop Up fits into your Mac.")
+            VStack(spacing: 0) {
+                SettingRow(title: "Show in the menu bar",
+                           detail: "Free space at a glance, with shortcuts to clean up. Closing the window keeps Mop Up running up there.",
+                           isOn: $settings.showInMenuBar)
+                Divider().overlay(AppColors.hairline).padding(.leading, 18)
+                SettingRow(title: "Open at login",
+                           detail: settings.showInMenuBar ? "Start Mop Up quietly in the menu bar when you log in." : "Start Mop Up when you log in.",
+                           isOn: Binding(get: { settings.openAtLoginEnabled }, set: { settings.setOpenAtLogin($0) }))
+                if let error = settings.loginError {
+                    Text(error)
+                        .font(.mono(10))
+                        .foregroundStyle(AppColors.destructive)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .padding(.horizontal, 18)
+                        .padding(.bottom, 12)
+                }
+            }
+            .card()
+
+            SectionLabel(text: "About")
+                .padding(.top, 6)
             HStack(spacing: 24) {
                 Mascot(mood: .proud, size: 130, disc: .white.opacity(0.55))
                 VStack(alignment: .leading, spacing: 6) {
@@ -93,5 +117,30 @@ struct MonoLink: View {
                 .underline()
         }
         .buttonStyle(.plain)
+    }
+}
+
+private struct SettingRow: View {
+    let title: String
+    let detail: String
+    @Binding var isOn: Bool
+
+    var body: some View {
+        Toggle(isOn: $isOn) {
+            VStack(alignment: .leading, spacing: 3) {
+                Text(title)
+                    .font(.mono(12, weight: .semibold))
+                    .foregroundStyle(AppColors.text)
+                Text(detail)
+                    .font(.mono(10.5))
+                    .foregroundStyle(AppColors.secondaryText)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+        }
+        .toggleStyle(.switch)
+        .tint(AppColors.toggle)
+        .padding(.horizontal, 18)
+        .padding(.vertical, 14)
     }
 }
