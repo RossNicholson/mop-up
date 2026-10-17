@@ -62,7 +62,6 @@
 		6C7A96D9FAD28D14345C0CFE /* TuneUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TuneUpView.swift; sourceTree = "<group>"; };
 		7CFF4C3E9F20690457170721 /* Demo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Demo.swift; sourceTree = "<group>"; };
 		80E827B87A30900F99762160 /* HistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryView.swift; sourceTree = "<group>"; };
-		933F7BFA9B86788E11123486 /* mac-house-style */ = {isa = PBXFileReference; lastKnownFileType = folder; name = "mac-house-style"; path = "../mac-house-style"; sourceTree = SOURCE_ROOT; };
 		986FC7A246E8F11B7DCD4830 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		BA17EC05495C9A007F6CE951 /* SpaceModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpaceModelTests.swift; sourceTree = "<group>"; };
 		BAB05073FA8C3239A42B4A4E /* SpaceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpaceView.swift; sourceTree = "<group>"; };
@@ -106,7 +105,6 @@
 			children = (
 				2D6A137D192B4C8BAE9A7FF3 /* MopUp */,
 				0A89BA8D1F6AEEA4212AAFA2 /* MopUpTests */,
-				BB126831954D739C25965F59 /* Packages */,
 				874F4AB5D00D8995E47458CE /* Products */,
 			);
 			sourceTree = "<group>";
@@ -158,14 +156,6 @@
 				6BF9A680C962106959374F0A /* MoleReports.swift */,
 			);
 			path = Engine;
-			sourceTree = "<group>";
-		};
-		BB126831954D739C25965F59 /* Packages */ = {
-			isa = PBXGroup;
-			children = (
-				933F7BFA9B86788E11123486 /* mac-house-style */,
-			);
-			name = Packages;
 			sourceTree = "<group>";
 		};
 		D33B1DC4873B91566FD5519E /* MenuBar */ = {
@@ -265,7 +255,7 @@
 			mainGroup = 112E1710F4E6AE4E48A6CA38;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				817206C6E54557006FA2F7E2 /* XCLocalSwiftPackageReference "../mac-house-style" */,
+				C9D6E76E1D0560961B597282 /* XCRemoteSwiftPackageReference "mac-house-style" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 874F4AB5D00D8995E47458CE /* Products */;
@@ -596,16 +586,21 @@
 		};
 /* End XCConfigurationList section */
 
-/* Begin XCLocalSwiftPackageReference section */
-		817206C6E54557006FA2F7E2 /* XCLocalSwiftPackageReference "../mac-house-style" */ = {
-			isa = XCLocalSwiftPackageReference;
-			relativePath = "../mac-house-style";
+/* Begin XCRemoteSwiftPackageReference section */
+		C9D6E76E1D0560961B597282 /* XCRemoteSwiftPackageReference "mac-house-style" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/RossNicholson/mac-house-style";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
 		};
-/* End XCLocalSwiftPackageReference section */
+/* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
 		18B5FC7848796F437BB55200 /* HouseStyle */ = {
 			isa = XCSwiftPackageProductDependency;
+			package = C9D6E76E1D0560961B597282 /* XCRemoteSwiftPackageReference "mac-house-style" */;
 			productName = HouseStyle;
 		};
 /* End XCSwiftPackageProductDependency section */
