@@ -14,7 +14,7 @@ Mop Up is a native SwiftUI app for macOS 14 and later. Its cleaning engine is [M
 - **Tune Up**: refreshes Finder, Spotlight and network caches, checks preferences and login items and repairs what it safely can. You can check first without changing anything.
 - **Disk Space**: the biggest places on your Mac. Open folders to look inside, show items in Finder or move them to the Trash.
 - **History**: every clean-up, uninstall and tune-up.
-- **Menu bar**: free space at a glance, with a panel showing health, memory and processor and shortcuts to clean up, uninstall, tune up or check disk space. Drag the grip in the panel's bottom-right corner to make it bigger. Closing the window keeps Mop Up in the menu bar; it can also open at login. Both are in Settings.
+- **Menu bar**: free space at a glance, with a panel showing health, memory and processor and shortcuts to clean up, uninstall, tune up or check disk space. Drag the grip in the panel's bottom-right corner to make it bigger; Mop Up remembers the size. Closing the window keeps Mop Up in the menu bar; it can also open at login. Both are in Settings.
 
 ## Install
 
@@ -25,6 +25,8 @@ brew install --cask rossnicholson/tap/mopup
 
 Or download the DMG from [Releases](https://github.com/RossNicholson/mop-up/releases). Mop Up is signed and notarized by Apple.
 
+**Updating.** Open **Settings → Check for updates**. Installed with Homebrew, Mop Up quits, updates and reopens on its own (or run `brew upgrade --cask rossnicholson/tap/mopup`). Installed from the DMG, it asks GitHub for the latest version and opens its download page.
+
 **Full Disk Access.** macOS hides some folders from apps until you allow it. Without Full Disk Access, Mop Up still works but skips the Trash, some caches and app leftovers it can't check fully. Turn it on in System Settings → Privacy & Security → Full Disk Access (Mop Up has a button that takes you there).
 
 **Admin password.** Some tune-up steps and some app removals need your password. macOS asks for it in a dialog titled "Mop Up"; it goes straight to macOS and Mop Up never stores it.
@@ -34,6 +36,8 @@ Or download the DMG from [Releases](https://github.com/RossNicholson/mop-up/rele
 Mop Up is a front end for **[Mole](https://github.com/tw93/Mole)**, the open-source Mac cleaner by [tw93](https://github.com/tw93). Every scan, clean, uninstall and tune-up is done by Mole; Mop Up runs it in the background and turns its results into the screens you see. If you like the terminal, use Mole directly. tw93 also makes a paid native app, [Mole for Mac](https://mole.fit).
 
 A pinned Mole release is bundled inside the app (`scripts/vendor-mole.sh` downloads it and checks every file against a pinned SHA-256). Mop Up changes one line of it: the title of the admin-password dialog. Each Mop Up release includes the exact Mole source it ships with.
+
+The look and the menu bar panel come from [HouseStyle](https://github.com/RossNicholson/mac-house-style), shared with my other Mac apps, BrewDock and ClawdBar.
 
 Fonts: [Barlow Condensed](https://github.com/jpt/barlow) and [Geist Mono](https://github.com/vercel/geist-font), SIL Open Font License.
 
@@ -48,7 +52,7 @@ open MopUp.xcodeproj
 
 `make run` builds and opens a development copy signed with the Developer ID, so macOS remembers the permissions you give it between builds (an unsigned or ad-hoc build looks like a new app every time). Without that certificate, build from Xcode as usual.
 
-The build downloads Mole into `Vendor/` (git-ignored), copies it into the app and signs its two Go helpers. `make test` runs the tests; the engine tests run the bundled Mole with read-only commands (status, app list, previews) and never delete anything.
+The build downloads Mole into `Vendor/` (git-ignored), copies it into the app and signs its two Go helpers. `make test` runs the tests; the engine tests run the bundled Mole with read-only commands (status, app list, previews) and never delete anything. `make screenshots` renders every screen and the menu bar panel with sample data into `build/screenshots`.
 
 Releasing is one command; see [RELEASING.md](RELEASING.md).
 
