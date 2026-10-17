@@ -10,6 +10,9 @@ final class StatusBarController: NSObject, NSWindowDelegate {
     private let statusItem: NSStatusItem
     private var panel: NSPanel!
     private var eventMonitor: Any?
+    /// An off-screen copy of the panel's content, laid out at its natural
+    /// size, to measure how big the panel needs to be
+    private var measure: NSHostingView<AnyView>!
 
     init(state: AppState) {
         self.state = state
@@ -25,14 +28,27 @@ final class StatusBarController: NSObject, NSWindowDelegate {
             button.target = self
         }
 
-        let content = MenuBarPanel { [weak self] in self?.closePanel() }
+        let content = MenuBarPanel(close: { [weak self] in self?.closePanel() },
+                                   onResized: { size in
+                                       UserDefaults.standard.set(NSStringFromSize(size), forKey: "panelSize")
+                                   })
             .environment(state)
         let hosting = NSHostingView(rootView: content)
         hosting.autoresizingMask = [.width, .height]
         // The panel's title bar is hidden; don't leave a gap for it
         hosting.safeAreaRegions = []
+        // The window decides the size (it's resizable); the content just fills
+        // it. Letting SwiftUI push sizes back while the window resizes loops.
+        hosting.sizingOptions = []
+        measure = NSHostingView(rootView: AnyView(MenuBarPanel(close: {}, flexible: false).environment(state)))
+        measure.safeAreaRegions = []
         panel = makePanel(for: hosting)
-        panel.contentView = hosting
+        // Not the window's own content view: SwiftUI would then size the
+        // window from the content, fighting the resize grip (a layout loop)
+        let container = NSView(frame: NSRect(x: 0, y: 0, width: 300, height: 400))
+        hosting.frame = container.bounds
+        container.addSubview(hosting)
+        panel.contentView = container
 
         state.status.startPolling()
         observe()
@@ -84,7 +100,7 @@ final class StatusBarController: NSObject, NSWindowDelegate {
 
     private func makePanel(for content: NSView) -> NSPanel {
         let panel = NSPanel(
-            contentRect: NSRect(origin: .zero, size: content.fittingSize),
+            contentRect: NSRect(origin: .zero, size: NSSize(width: 300, height: 400)),
             styleMask: [.titled, .fullSizeContentView, .nonactivatingPanel],
             backing: .buffered,
             defer: false
@@ -133,13 +149,25 @@ final class StatusBarController: NSObject, NSWindowDelegate {
         }
     }
 
-    /// Resize the panel to its SwiftUI content, keeping it hanging from the menu bar
+    /// Size the panel to its content, or to the size you dragged it to if
+    /// that's bigger, keeping it hanging from the menu bar. It can't be made
+    /// smaller than its content.
     private func fitPanelToContent() {
-        guard let panel, let content = panel.contentView else { return }
-        let size = content.fittingSize
-        guard size != panel.frame.size, size.width > 0, size.height > 0 else { return }
-        panel.setContentSize(size)
-        if panel.isVisible { positionPanel() }
+        guard let panel, let measure else { return }
+        let fit = measure.fittingSize
+        guard fit.width > 0, fit.height > 0 else { return }
+        panel.minSize = fit
+        let saved = UserDefaults.standard.string(forKey: "panelSize").map(NSSizeFromString) ?? .zero
+        let size = NSSize(width: max(fit.width, saved.width), height: max(fit.height, saved.height))
+        guard size != panel.frame.size else { return }
+        if panel.isVisible {
+            // Grow or shrink downwards from where it is now
+            let frame = panel.frame
+            panel.setFrame(NSRect(x: frame.minX, y: frame.maxY - size.height, width: size.width, height: size.height),
+                           display: true)
+        } else {
+            panel.setContentSize(size)
+        }
     }
 
     private func positionPanel() {

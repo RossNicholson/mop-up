@@ -68,7 +68,7 @@ struct SystemStatus: Decodable, Sendable {
 
     let host: String?
     let uptime: String?
-    let hardware: Hardware?
+    var hardware: Hardware?
     let healthScore: Int?
     let healthScoreMsg: String?
     let cpu: CPU?

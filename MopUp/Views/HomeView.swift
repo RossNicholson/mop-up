@@ -51,7 +51,8 @@ struct HomeView: View {
 
     private func subtitle(_ status: SystemStatus?) -> String {
         guard let hw = status?.hardware else { return "A quick look at how things are" }
-        return [hw.model, hw.cpuModel, hw.osVersion].compactMap { $0 }.joined(separator: " · ")
+        let parts = [hw.model, hw.cpuModel, hw.osVersion].compactMap { $0 }.filter { !$0.isEmpty }
+        return parts.isEmpty ? "A quick look at how things are" : parts.joined(separator: " · ")
     }
 
     private func percent(_ value: Double?) -> String {

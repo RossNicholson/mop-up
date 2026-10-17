@@ -5,6 +5,10 @@ import SwiftUI
 struct MenuBarPanel: View {
     @Environment(AppState.self) private var state
     let close: () -> Void
+    /// Remembers the size after the corner grip is dragged
+    var onResized: ((NSSize) -> Void)? = nil
+    /// False for the off-screen copy that measures the panel's natural size
+    var flexible = true
 
     var body: some View {
         let status = state.status.status
@@ -94,6 +98,8 @@ struct MenuBarPanel: View {
             .padding(.horizontal, 14)
             .padding(.bottom, 12)
 
+            // When the panel is made bigger, the extra room goes here
+            Spacer(minLength: 0)
             Divider().overlay(AppColors.hairline)
             HStack {
                 Button("Open Mop Up") { open(nil) }
@@ -105,11 +111,17 @@ struct MenuBarPanel: View {
             .buttonStyle(.plain)
             .font(.mono(10.5, weight: .medium))
             .foregroundStyle(AppColors.text)
-            .padding(.horizontal, 14)
+            .padding(.leading, 14)
+            .padding(.trailing, 24)   // clear of the resize grip in the corner
             .padding(.vertical, 10)
         }
-        .frame(width: 300)
+        .frame(minWidth: 300, maxWidth: flexible ? .infinity : 300,
+               maxHeight: flexible ? .infinity : nil, alignment: .top)
         .background(AppColors.ground)
+        .overlay(alignment: .bottomTrailing) {
+            ResizeGrip(onResized: onResized)
+                .padding(3)
+        }
     }
 
     private func open(_ section: AppSection?) {

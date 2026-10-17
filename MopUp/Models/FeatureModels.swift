@@ -40,7 +40,13 @@ final class StatusModel {
                 }
             }
             for await snapshot in engine.watchStatus(every: 3) {
-                status = snapshot.withLiveStartupDisk()
+                var fresh = snapshot.withLiveStartupDisk()
+                // Mole's first streamed snapshots can arrive before it has read
+                // the hardware details; keep the ones we already have
+                if (fresh.hardware?.model ?? "").isEmpty, let known = status?.hardware {
+                    fresh.hardware = known
+                }
+                status = fresh
                 error = nil
             }
         }

@@ -16,6 +16,7 @@
 		333A6B6E865C0E7F26820316 /* MoleEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40EB3B74500128B8ABC6A475 /* MoleEngine.swift */; };
 		351911918163B660B6015245 /* StatusBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C444D050423C1904E3AC4061 /* StatusBarController.swift */; };
 		3A6AEBA0CAC7A16475BEE746 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12CC377E67E34DB4A93E78BA /* AppDelegate.swift */; };
+		40233D4C65646AC85B304DC3 /* ResizeGrip.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEE96C59BF2F9AB79911E2E7 /* ResizeGrip.swift */; };
 		488C01373108A1A5CA055CA9 /* MopUpApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AC5D447BB03743E29070C64 /* MopUpApp.swift */; };
 		5726402723EE119753453467 /* MoleReports.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BF9A680C962106959374F0A /* MoleReports.swift */; };
 		61DFBA38E1D4C0F3915EF2A4 /* MoleModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FF245829E7BFC32336E8468 /* MoleModels.swift */; };
@@ -85,6 +86,7 @@
 		E45D57F79D872CDDCE8FF437 /* MopUpTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MopUpTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		EF60C0C6A1FCC741E1692E56 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		F4D8C1F39A462696417A272F /* CleanView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CleanView.swift; sourceTree = "<group>"; };
+		FEE96C59BF2F9AB79911E2E7 /* ResizeGrip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResizeGrip.swift; sourceTree = "<group>"; };
 		FEF7BFDC2E130C907F3BDA45 /* ReportParserTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportParserTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -197,6 +199,7 @@
 			children = (
 				CCBFA3CCEED760DA28504DE7 /* Components.swift */,
 				47BA10E8BC848A2BA593FEE9 /* Mascot.swift */,
+				FEE96C59BF2F9AB79911E2E7 /* ResizeGrip.swift */,
 				9E4A27DDD63D041840482A29 /* Theme.swift */,
 			);
 			path = Theme;
@@ -336,6 +339,7 @@
 				61DFBA38E1D4C0F3915EF2A4 /* MoleModels.swift in Sources */,
 				5726402723EE119753453467 /* MoleReports.swift in Sources */,
 				488C01373108A1A5CA055CA9 /* MopUpApp.swift in Sources */,
+				40233D4C65646AC85B304DC3 /* ResizeGrip.swift in Sources */,
 				C047F534FF0FD2E1C0BFECB1 /* SpaceView.swift in Sources */,
 				351911918163B660B6015245 /* StatusBarController.swift in Sources */,
 				9DD5D2FD18B360C591F9AA36 /* Theme.swift in Sources */,
