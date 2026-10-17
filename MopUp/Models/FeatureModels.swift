@@ -34,13 +34,13 @@ final class StatusModel {
         watcher = Task { [engine] in
             if status == nil {
                 do {
-                    status = try await engine.json(SystemStatus.self, ["status", "--json"])
+                    status = try await engine.json(SystemStatus.self, ["status", "--json"]).withLiveStartupDisk()
                 } catch {
                     self.error = error.localizedDescription
                 }
             }
             for await snapshot in engine.watchStatus(every: 3) {
-                status = snapshot
+                status = snapshot.withLiveStartupDisk()
                 error = nil
             }
         }
@@ -73,10 +73,20 @@ final class StatusModel {
         poller = nil
     }
 
-    /// One-off refresh (after a clean, say)
+    private(set) var isRefreshing = false
+
+    /// One-off refresh (after a clean, say, or the refresh button)
     func refresh() async {
+        #if DEBUG
+        if isDemo { return }
+        #endif
+        guard !isRefreshing else { return }
+        isRefreshing = true
+        defer { isRefreshing = false }
+        // The disk figure first: it's instant, and it's the one people watch
+        if let status { self.status = status.withLiveStartupDisk() }
         if let fresh = try? await engine.json(SystemStatus.self, ["status", "--json"]) {
-            status = fresh
+            status = fresh.withLiveStartupDisk()
         }
     }
 }
@@ -102,6 +112,8 @@ final class CleanModel {
     private(set) var phase: Phase = .idle
     /// The section Mole is working through right now
     private(set) var step = ""
+    /// Lets the menu bar and Home catch up after a clean
+    @ObservationIgnored var onDiskChanged: (() -> Void)?
     private let engine: MoleEngine
     private let jobs: JobGate
     private var task: Task<Void, Never>?
@@ -151,6 +163,7 @@ final class CleanModel {
                 let output = try await engine.run(["clean"], onLine: progress)
                 let report = MoleReport.parse(output.lines)
                 phase = report.summary.isEmpty ? .failed(Self.failure(output)) : .done(report)
+                onDiskChanged?()
             } catch {
                 phase = .failed(error.localizedDescription)
             }
@@ -273,6 +286,8 @@ final class UninstallModel {
     var sort: Sort = .size
     private(set) var phase: Phase = .browsing
     private(set) var step = ""
+    /// Lets the menu bar and Home catch up after an uninstall
+    @ObservationIgnored var onDiskChanged: (() -> Void)?
 
     private let engine: MoleEngine
     private let jobs: JobGate
@@ -339,6 +354,7 @@ final class UninstallModel {
                 let summary = UninstallPlan.parse(output.lines).summary
                 selection = []
                 phase = .done(summary.isEmpty ? ["Done."] : summary)
+                onDiskChanged?()
                 await load()
             } catch {
                 phase = .failed(error.localizedDescription)
@@ -374,6 +390,8 @@ final class SpaceModel {
     private(set) var error: String?
     /// Why the last move to Trash failed, shown as an alert
     var trashError: String?
+    /// Lets the menu bar and Home catch up after a move to Trash
+    @ObservationIgnored var onDiskChanged: (() -> Void)?
     private let engine: MoleEngine
 
     init(engine: MoleEngine) { self.engine = engine }
@@ -449,6 +467,7 @@ final class SpaceModel {
         // here and clear Mole's cache so later scans measure afresh.
         forget(path)
         MoleCache.clearDiskScans()
+        onDiskChanged?()
         return true
     }
 

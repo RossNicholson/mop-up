@@ -71,6 +71,12 @@ final class AppState {
         tuneUp = TuneUpModel(engine: engine, jobs: jobs)
         space = SpaceModel(engine: engine)
         history = HistoryModel(engine: engine)
+
+        let status = self.status
+        let refresh: () -> Void = { Task { await status.refresh() } }
+        clean.onDiskChanged = refresh
+        uninstall.onDiskChanged = refresh
+        space.onDiskChanged = refresh
     }
 
     func refreshPermissions() {

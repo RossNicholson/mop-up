@@ -22,6 +22,7 @@ struct MenuBarPanel: View {
                         .foregroundStyle(AppColors.secondaryText)
                 }
                 Spacer()
+                RefreshButton()
             }
             .padding(14)
 
@@ -162,5 +163,24 @@ private struct QuickButton: View {
             .contentShape(RoundedRectangle(cornerRadius: 12))
         }
         .buttonStyle(PressableStyle())
+    }
+}
+
+/// Re-reads disk, memory and health straight away
+struct RefreshButton: View {
+    @Environment(AppState.self) private var state
+    var size: CGFloat = 28
+
+    var body: some View {
+        if state.status.isRefreshing {
+            ProgressView()
+                .controlSize(.small)
+                .frame(width: size, height: size)
+        } else {
+            RoundIconButton(symbol: "arrow.clockwise", size: size, fill: AppColors.surface,
+                            foreground: AppColors.text, help: "Refresh") {
+                Task { await state.status.refresh() }
+            }
+        }
     }
 }

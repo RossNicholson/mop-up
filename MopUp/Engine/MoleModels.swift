@@ -33,8 +33,8 @@ struct SystemStatus: Decodable, Sendable {
 
     struct Disk: Decodable, Sendable {
         let mount: String
-        let used: Int64
-        let total: Int64
+        var used: Int64
+        var total: Int64
         let external: Bool?
 
         var free: Int64 { max(total - used, 0) }
@@ -73,7 +73,7 @@ struct SystemStatus: Decodable, Sendable {
     let healthScoreMsg: String?
     let cpu: CPU?
     let memory: Memory?
-    let disks: [Disk]?
+    var disks: [Disk]?
     let trashSize: Int64?
     let batteries: [Battery]?
     let topProcesses: [Process]?
@@ -86,6 +86,31 @@ struct SystemStatus: Decodable, Sendable {
 
     /// The startup disk
     var mainDisk: Disk? { disks?.first { $0.mount == "/" } ?? disks?.first }
+
+    /// The same snapshot with the startup disk's figures read fresh from macOS.
+    /// Mole asks Finder and keeps the answer for two minutes; this is instant
+    /// and matches what Finder shows.
+    func withLiveStartupDisk() -> SystemStatus {
+        guard let live = StartupDisk.read(),
+              let index = disks?.firstIndex(where: { $0.mount == "/" }) else { return self }
+        var copy = self
+        copy.disks![index].total = live.total
+        copy.disks![index].used = max(live.total - live.free, 0)
+        return copy
+    }
+}
+
+enum StartupDisk {
+    static func read() -> (free: Int64, total: Int64)? {
+        // Plain available capacity, as Finder shows it. The "important usage"
+        // figure also counts space macOS could reclaim (Time Machine snapshots,
+        // iCloud files), which can be ten times larger and doesn't match Finder.
+        let keys: Set<URLResourceKey> = [.volumeAvailableCapacityKey, .volumeTotalCapacityKey]
+        guard let values = try? URL(fileURLWithPath: "/").resourceValues(forKeys: keys),
+              let free = values.volumeAvailableCapacity,
+              let total = values.volumeTotalCapacity, total > 0 else { return nil }
+        return (Int64(free), Int64(total))
+    }
 }
 
 /// One row of `mole uninstall --list`

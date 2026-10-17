@@ -6,7 +6,9 @@ struct HomeView: View {
     var body: some View {
         let status = state.status.status
         Screen {
-            ScreenHeader(title: "Your Mac", subtitle: subtitle(status))
+            ScreenHeader(title: "Your Mac", subtitle: subtitle(status)) {
+                RefreshButton(size: 30)
+            }
             FullDiskAccessBanner()
 
             if let status {
