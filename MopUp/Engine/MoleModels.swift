@@ -112,7 +112,7 @@ struct DiskScan: Decodable, Sendable {
     struct Entry: Decodable, Sendable, Identifiable, Hashable {
         let name: String
         let path: String
-        let size: Int64
+        var size: Int64
         let isDir: Bool
         let scanStatus: String?
         let insight: Bool?
@@ -130,16 +130,16 @@ struct DiskScan: Decodable, Sendable {
     struct LargeFile: Decodable, Sendable, Identifiable, Hashable {
         let name: String
         let path: String
-        let size: Int64
+        var size: Int64
         var id: String { path }
     }
 
     let path: String
     let overview: Bool?
     let scanStatus: String?
-    let entries: [Entry]
-    let largeFiles: [LargeFile]?
-    let totalSize: Int64?
+    var entries: [Entry]
+    var largeFiles: [LargeFile]?
+    var totalSize: Int64?
 
     enum CodingKeys: String, CodingKey {
         case path, overview, entries

@@ -316,6 +316,8 @@ final class SpaceModel {
     private(set) var scans: [String: DiskScan] = [:]
     private(set) var loading: String?
     private(set) var error: String?
+    /// Why the last move to Trash failed, shown as an alert
+    var trashError: String?
     private let engine: MoleEngine
 
     init(engine: MoleEngine) { self.engine = engine }
@@ -341,18 +343,33 @@ final class SpaceModel {
     }
 
     func rescan() async {
+        // Mole would otherwise reuse its cached results for recently changed folders
+        MoleCache.clearDiskScans()
         scans[currentPath ?? Self.overviewKey] = nil
         await scan(currentPath)
     }
 
-    private func scan(_ path: String?) async {
+    private func scan(_ path: String?, retried: Bool = false) async {
         let key = path ?? Self.overviewKey
         loading = key
         error = nil
         defer { if loading == key { loading = nil } }
         do {
             let args = ["analyze", "--json"] + (path.map { [$0] } ?? [])
-            scans[key] = try await engine.json(DiskScan.self, args)
+            var result = try await engine.json(DiskScan.self, args)
+            // Mole's cache can still list things deleted in the last half hour
+            // (in Finder, say). If it does, its totals are stale too: clear the
+            // cache and measure once more. Either way, never show a ghost.
+            let fm = FileManager.default
+            let before = result.entries.count + (result.largeFiles?.count ?? 0)
+            result.entries.removeAll { !fm.fileExists(atPath: $0.path) }
+            result.largeFiles?.removeAll { !fm.fileExists(atPath: $0.path) }
+            if !retried, result.entries.count + (result.largeFiles?.count ?? 0) < before {
+                MoleCache.clearDiskScans()
+                await scan(path, retried: true)
+                return
+            }
+            scans[key] = result
         } catch {
             self.error = error.localizedDescription
         }
@@ -360,16 +377,54 @@ final class SpaceModel {
 
     /// Moves a file or folder to the Trash (recoverable), then refreshes
     func moveToTrash(_ path: String) async -> Bool {
+        // Already gone (moved in Finder, say): just take it off the list
+        guard FileManager.default.fileExists(atPath: path) else {
+            forget(path)
+            return true
+        }
         do {
             try await NSWorkspace.shared.recycle([URL(fileURLWithPath: path)])
-            // Everything above this item is now smaller: drop those cached scans
-            scans = scans.filter { key, _ in key != Self.overviewKey && !path.hasPrefix(key) }
-            await scan(currentPath)
-            return true
         } catch {
-            self.error = error.localizedDescription
+            trashError = error.localizedDescription
             return false
         }
+        // Don't rescan: Mole's scan cache trusts a folder for 30 minutes after
+        // it changes, so a rescan would still list the item. Update the lists
+        // here and clear Mole's cache so later scans measure afresh.
+        forget(path)
+        MoleCache.clearDiskScans()
+        return true
+    }
+
+    /// Removes a trashed item from every scan on screen and takes its size off
+    /// the folders that contained it
+    private func forget(_ path: String) {
+        let removed = scans.values.flatMap { scan in
+            scan.entries.filter { $0.path == path }.map(\.size) + (scan.largeFiles ?? []).filter { $0.path == path }.map(\.size)
+        }.max() ?? 0
+        let isInside = { (folder: String) in path.hasPrefix(folder.hasSuffix("/") ? folder : folder + "/") }
+
+        for (key, var scan) in scans {
+            scan.entries.removeAll { $0.path == path }
+            scan.largeFiles?.removeAll { $0.path == path }
+            for index in scan.entries.indices where isInside(scan.entries[index].path) {
+                scan.entries[index].size = max(scan.entries[index].size - removed, 0)
+            }
+            if key == Self.overviewKey || isInside(key), let total = scan.totalSize {
+                scan.totalSize = max(total - removed, 0)
+            }
+            scans[key] = scan
+        }
+    }
+}
+
+/// Mole's on-disk caches (~/.cache/mole)
+enum MoleCache {
+    /// Drops Mole's saved disk-scan results. They're rebuilt on the next scan;
+    /// Mole clears them the same way after its own deletions.
+    static func clearDiskScans() {
+        let dir = FileManager.default.homeDirectoryForCurrentUser.appendingPathComponent(".cache/mole/analyzer")
+        try? FileManager.default.removeItem(at: dir)
     }
 }
 

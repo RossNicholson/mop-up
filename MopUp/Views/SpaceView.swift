@@ -38,6 +38,14 @@ struct SpaceView: View {
         } message: { entry in
             Text("\(ByteSize.format(entry.size)) · \(CleanPathFormatter.tilde(entry.path))\nYou can get it back from the Trash until you empty it.")
         }
+        .alert("Couldn't move that to the Trash", isPresented: Binding(
+            get: { model.trashError != nil },
+            set: { if !$0 { model.trashError = nil } }
+        )) {
+            Button("OK", role: .cancel) {}
+        } message: {
+            Text(model.trashError ?? "")
+        }
     }
 }
 

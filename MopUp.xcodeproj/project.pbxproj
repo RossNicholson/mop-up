@@ -32,6 +32,7 @@
 		C047F534FF0FD2E1C0BFECB1 /* SpaceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAB05073FA8C3239A42B4A4E /* SpaceView.swift */; };
 		D1DDCCE67F5BE3012E4EB4EF /* HistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80E827B87A30900F99762160 /* HistoryView.swift */; };
 		D5C944E405353BF330036206 /* ReportParserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEF7BFDC2E130C907F3BDA45 /* ReportParserTests.swift */; };
+		E49E57D781D641ED86F4E0A2 /* SpaceModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA17EC05495C9A007F6CE951 /* SpaceModelTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -63,6 +64,7 @@
 		80E827B87A30900F99762160 /* HistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryView.swift; sourceTree = "<group>"; };
 		986FC7A246E8F11B7DCD4830 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		9E4A27DDD63D041840482A29 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
+		BA17EC05495C9A007F6CE951 /* SpaceModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpaceModelTests.swift; sourceTree = "<group>"; };
 		BAB05073FA8C3239A42B4A4E /* SpaceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpaceView.swift; sourceTree = "<group>"; };
 		C9B9A077A26B6A8DED780F4D /* GeistMono-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "GeistMono-Medium.ttf"; sourceTree = "<group>"; };
 		CADEFDF5DD235ADE7E44AFE5 /* GeistMono-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "GeistMono-Regular.ttf"; sourceTree = "<group>"; };
@@ -82,6 +84,7 @@
 			children = (
 				2F7BA3271834D7677E9F4857 /* EngineTests.swift */,
 				FEF7BFDC2E130C907F3BDA45 /* ReportParserTests.swift */,
+				BA17EC05495C9A007F6CE951 /* SpaceModelTests.swift */,
 			);
 			path = MopUpTests;
 			sourceTree = "<group>";
@@ -320,6 +323,7 @@
 			files = (
 				82CB21214A5FF0C908341DBC /* EngineTests.swift in Sources */,
 				D5C944E405353BF330036206 /* ReportParserTests.swift in Sources */,
+				E49E57D781D641ED86F4E0A2 /* SpaceModelTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
