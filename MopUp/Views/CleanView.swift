@@ -129,7 +129,7 @@ private struct CleanPreview: View {
                         if line.id != reviews.last?.id { Divider().overlay(AppColors.hairline).padding(.leading, 16) }
                     }
                 }
-                .card()
+                .card(radius: Radius.window)
             }
 
             if !warnings.isEmpty {
@@ -150,7 +150,7 @@ private struct CleanPreview: View {
                 }
                 .padding(16)
                 .frame(maxWidth: .infinity, alignment: .leading)
-                .card()
+                .card(radius: Radius.window)
             }
         }
     }
@@ -239,7 +239,7 @@ private struct CleanSectionCard: View {
             }
         }
         .padding(16)
-        .card()
+        .card(radius: Radius.window)
     }
 
     static func symbol(for title: String) -> String {

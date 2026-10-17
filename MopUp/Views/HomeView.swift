@@ -106,7 +106,7 @@ private struct HealthCard: View {
         }
         .padding(20)
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
-        .pastelCard(score >= 75 ? AppColors.mint : (score >= 50 ? AppColors.butter : AppColors.peach))
+        .pastelCard(score >= 75 ? AppColors.mint : (score >= 50 ? AppColors.butter : AppColors.peach), radius: Radius.hero)
         .accessibilityElement(children: .combine)
     }
 
@@ -167,7 +167,7 @@ private struct DiskCard: View {
         }
         .padding(20)
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
-        .pastelCard(AppColors.butter)
+        .pastelCard(AppColors.butter, radius: Radius.hero)
     }
 }
 
@@ -196,7 +196,7 @@ private struct StatTile: View {
         }
         .padding(16)
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-        .card()
+        .card(radius: Radius.window)
         .accessibilityElement(children: .combine)
     }
 }

@@ -28,7 +28,7 @@ struct AboutView: View {
                         .padding(.bottom, 12)
                 }
             }
-            .card()
+            .card(radius: Radius.window)
 
             SectionLabel(text: "About")
                 .padding(.top, 6)
@@ -74,7 +74,7 @@ struct AboutView: View {
             }
             .padding(18)
             .frame(maxWidth: .infinity, alignment: .leading)
-            .card()
+            .card(radius: Radius.window)
 
             SectionLabel(text: "Licence")
                 .padding(.top, 4)
@@ -99,24 +99,8 @@ struct AboutView: View {
             }
             .padding(18)
             .frame(maxWidth: .infinity, alignment: .leading)
-            .card()
+            .card(radius: Radius.window)
         }
-    }
-}
-
-/// Text link styled as a mono label
-struct MonoLink: View {
-    let title: String
-    let destination: URL
-
-    var body: some View {
-        Link(destination: destination) {
-            Text(title)
-                .font(.mono(10.5, weight: .medium))
-                .foregroundStyle(AppColors.text)
-                .underline()
-        }
-        .buttonStyle(.plain)
     }
 }
 
