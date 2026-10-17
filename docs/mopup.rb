@@ -16,6 +16,7 @@ cask "mopup" do
   uninstall quit: "com.rossnicholson.MopUp"
 
   zap trash: [
+    "~/Library/Application Support/Mop Up",
     "~/Library/Caches/com.rossnicholson.MopUp",
     "~/Library/Preferences/com.rossnicholson.MopUp.plist",
     "~/Library/Saved Application State/com.rossnicholson.MopUp.savedState",
