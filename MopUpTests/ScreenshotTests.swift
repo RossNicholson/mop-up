@@ -44,7 +44,7 @@ final class ScreenshotTests: XCTestCase {
     func testRenderMascotAndOG() throws {
         try render(Mascot(mood: .proud, size: 280, disc: AppColors.periwinkle), size: NSSize(width: 280, height: 280), dark: false, to: "mascot.png", clear: true)
         try Snapshot.panel(to: out.appendingPathComponent("panel-about.png")) {
-            AboutPopover(app: .mopUp) { Mascot(mood: .proud, size: 56, disc: AppColors.periwinkle) }
+            AboutPopover(app: .mopUp, hidingInstalledApps: false) { Mascot(mood: .proud, size: 56, disc: AppColors.periwinkle) }
         }
         let og = HStack(spacing: 56) {
             Mascot(mood: .happy, size: 300, disc: .white.opacity(0.55))
