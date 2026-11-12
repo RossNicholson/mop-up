@@ -37,7 +37,7 @@ Mop Up is a front end for **[Mole](https://github.com/tw93/Mole)**, the open-sou
 
 A pinned Mole release is bundled inside the app (`scripts/vendor-mole.sh` downloads it and checks every file against a pinned SHA-256). Mop Up changes one line of it: the title of the admin-password dialog. Each Mop Up release includes the exact Mole source it ships with.
 
-The look and the menu bar panel come from [HouseStyle](https://github.com/RossNicholson/mac-house-style), shared with my other Mac apps, BrewDock and ClawdBar.
+The look and the menu bar panel come from [HouseStyle](https://github.com/RossNicholson/mac-house-style), shared with my other Mac apps, BrewDock, ClawdBar, KeyBar and Repo Radar.
 
 Fonts: [Barlow Condensed](https://github.com/jpt/barlow) and [Geist Mono](https://github.com/vercel/geist-font), SIL Open Font License.
 
