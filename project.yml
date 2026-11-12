@@ -32,8 +32,8 @@ targets:
       properties:
         CFBundleName: Mop Up
         CFBundleDisplayName: Mop Up
-        CFBundleShortVersionString: "1.2.4"
-        CFBundleVersion: "8"
+        CFBundleShortVersionString: "1.2.5"
+        CFBundleVersion: "9"
         LSApplicationCategoryType: public.app-category.utilities
         NSHighResolutionCapable: true
         LSMinimumSystemVersion: "14.0"
