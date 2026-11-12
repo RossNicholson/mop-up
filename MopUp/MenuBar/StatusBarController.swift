@@ -68,8 +68,12 @@ final class StatusBarController {
         let free = ByteCountFormatter.string(fromByteCount: disk.free, countStyle: .file)
             .replacingOccurrences(of: #"\.\d+ "#, with: " ", options: .regularExpression)
         let low = disk.fraction >= 0.9
+        let figure = switch state.settings.menuBarFigure {
+        case .space: free
+        case .percent: "\(Int(((1 - disk.fraction) * 100).rounded()))%"
+        }
         button.attributedTitle = NSAttributedString(
-            string: " \(free)",
+            string: " \(figure)",
             attributes: low ? [.foregroundColor: NSColor.systemOrange] : [:]
         )
         button.toolTip = "\(free) free on your startup disk" + (low ? ". It's nearly full." : "")

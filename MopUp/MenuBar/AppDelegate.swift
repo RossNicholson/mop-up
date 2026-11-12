@@ -134,6 +134,16 @@ final class AppSettings {
         }
     }
 
+    /// What the menu bar shows next to the icon
+    enum MenuBarFigure: String, CaseIterable {
+        case space, percent
+        var label: String { self == .space ? "Space free" : "% free" }
+    }
+
+    var menuBarFigure: MenuBarFigure = MenuBarFigure(rawValue: UserDefaults.standard.string(forKey: "menuBarFigure") ?? "") ?? .space {
+        didSet { UserDefaults.standard.set(menuBarFigure.rawValue, forKey: "menuBarFigure") }
+    }
+
     /// Set by SMAppService; read back from it so it matches System Settings
     private(set) var openAtLoginEnabled = AppSettings.openAtLogin
     private(set) var loginError: String?

@@ -14,6 +14,12 @@ struct AboutView: View {
             SettingToggle(title: "Show in the menu bar",
                           detail: "Free space at a glance, with shortcuts to clean up. Closing the window keeps Mop Up running up there.",
                           isOn: $settings.showInMenuBar)
+            if settings.showInMenuBar {
+                SettingCard(title: "Menu bar shows", detail: "How much room is left on your startup disk, as space or as a percentage.", below: {
+                    PillPicker(selection: $settings.menuBarFigure, options: AppSettings.MenuBarFigure.allCases,
+                               track: AppColors.ground) { $0.label }
+                })
+            }
             SettingToggle(title: "Open at login",
                           detail: settings.showInMenuBar ? "Start Mop Up quietly in the menu bar when you log in." : "Start Mop Up when you log in.",
                           isOn: Binding(get: { settings.openAtLoginEnabled }, set: { settings.setOpenAtLogin($0) })) {
