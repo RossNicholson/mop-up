@@ -51,6 +51,23 @@ struct MoleReport: Sendable {
 
     var headline: String? { summary.first }
 
+    /// How a clean or clean preview ended, from Mole's headline ("Cleanup
+    /// complete", "Dry run interrupted", "Cleanup incomplete"…)
+    enum Ending: Equatable, Sendable { case finished, stopped, incomplete }
+
+    var ending: Ending {
+        let headline = (headline ?? "").lowercased()
+        if headline.contains("cancel") || headline.contains("interrupt") { return .stopped }
+        if headline.contains("incomplete") || !headline.contains("complete") { return .incomplete }
+        return .finished
+    }
+
+    /// Mole's reason a run didn't finish ("Cancelled: … Remaining cleanup was skipped.")
+    var stopReason: String? {
+        summary.first { $0.contains("Remaining cleanup was skipped") || $0.hasPrefix("◎ Cancelled") || $0.contains("Cancelled:") }
+            .map { $0.trimmingCharacters(in: CharacterSet(charactersIn: "◎ ")) }
+    }
+
     /// The value after "Label:" in the summary, e.g. "Potential space" → "6.77GB"
     func summaryValue(_ label: String) -> String? {
         for line in summary {
@@ -139,6 +156,15 @@ enum CleanFileList {
         FileManager.default.homeDirectoryForCurrentUser.appendingPathComponent(".config/mole/clean-list.txt")
     }
 
+    /// The file list, if this scan wrote it. One left from an earlier scan
+    /// would show files this one didn't find.
+    static func load(from url: URL = url, writtenSince start: Date) -> [String: [Entry]] {
+        guard let modified = (try? url.resourceValues(forKeys: [.contentModificationDateKey]))?.contentModificationDate,
+              modified >= start.addingTimeInterval(-1),
+              let text = try? String(contentsOf: url, encoding: .utf8) else { return [:] }
+        return parse(text)
+    }
+
     static func parse(_ text: String) -> [String: [Entry]] {
         var result: [String: [Entry]] = [:]
         var section: String?
@@ -171,6 +197,8 @@ struct UninstallPlan: Sendable {
     struct AppGroup: Sendable, Identifiable {
         let name: String
         let size: String?
+        /// Homebrew removes the app itself (Mole tags it "[Brew]")
+        var isHomebrew = false
         var files: [File] = []
         var notes: [String] = []
         var id: String { name }
@@ -200,7 +228,8 @@ struct UninstallPlan: Sendable {
             let body = line.dropFirst().trimmingCharacters(in: .whitespaces)
             let (name, size) = splitSize(body)
             if !indented, icon == "◎" {
-                plan.apps.append(AppGroup(name: name, size: size))
+                let brew = name.hasSuffix(" [Brew]")
+                plan.apps.append(AppGroup(name: brew ? String(name.dropLast(" [Brew]".count)) : name, size: size, isHomebrew: brew))
             } else if indented, !plan.apps.isEmpty {
                 if icon == "✓" || body.hasPrefix("/") || body.hasPrefix("~") {
                     plan.apps[plan.apps.count - 1].files.append(File(path: name, size: size))

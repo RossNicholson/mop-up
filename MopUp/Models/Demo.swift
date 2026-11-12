@@ -7,8 +7,8 @@ extension AppState {
     func loadDemo() {
         hasFullDiskAccess = true
         status.loadDemo(Self.demoStatus)
-        clean.loadDemo(.preview(MoleReport.parse(Self.demoClean.components(separatedBy: "\n")), files: [:]))
-        tuneUp.loadDemo(.done(MoleReport.parse(Self.demoTuneUp.components(separatedBy: "\n"))))
+        clean.loadDemo(.preview(MoleReport.parse(Self.demoClean.components(separatedBy: "\n")), files: [:], scannedAt: .now))
+        tuneUp.loadDemo(.done(MoleReport.parse(Self.demoTuneUp.components(separatedBy: "\n")), finished: true))
         uninstall.loadDemo(Self.demoApps, selected: ["VLC", "Steam"])
         space.loadDemo(Self.demoSpace)
         history.loadDemo(Self.demoHistory)

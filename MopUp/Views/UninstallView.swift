@@ -8,7 +8,7 @@ struct UninstallView: View {
         @Bindable var model = state.uninstall
         VStack(spacing: 0) {
             Screen {
-                ScreenHeader(title: "Uninstall", subtitle: "Remove apps along with their settings, caches and support files. Everything goes to the Trash, so you can get it back.") {
+                ScreenHeader(title: "Uninstall", subtitle: "Remove apps along with their settings, caches and support files. They go to the Trash, so you can get them back, except Homebrew apps, which Homebrew deletes itself.") {
                     SearchField(text: $model.search)
                 }
 
@@ -17,8 +17,8 @@ struct UninstallView: View {
                     AppList()
                 case .removing:
                     WorkingCard(title: "Uninstalling", detail: model.step, fill: AppColors.periwinkle)
-                case let .done(summary):
-                    UninstallDone(summary: summary)
+                case let .done(summary, complete, homebrew):
+                    UninstallDone(summary: summary, complete: complete, homebrew: homebrew)
                 case let .failed(message):
                     MessageCard(title: "Couldn't uninstall", message: message, mood: .sleepy, fill: AppColors.peach)
                     GhostButton(title: "Back to apps", symbol: "arrow.left") { model.backToList() }
@@ -36,7 +36,7 @@ struct UninstallView: View {
             get: { if case .confirm = model.phase { return true } else { return false } },
             set: { if !$0, case .confirm = model.phase { model.backToList() } }
         )) {
-            if case let .confirm(plan) = model.phase {
+            if case let .confirm(plan, _) = model.phase {
                 UninstallConfirmSheet(plan: plan)
             }
         }
@@ -109,16 +109,20 @@ private struct AppList: View {
                 RoundIconButton(symbol: "arrow.clockwise", size: 24, fill: AppColors.surface, foreground: AppColors.text, help: "Refresh") {
                     Task { await model.load() }
                 }
+                .disabled(!model.canChangeSelection)
             }
             LazyVStack(spacing: 6) {
                 ForEach(model.visibleApps) { app in
                     AppRow(app: app, selected: model.selection.contains(app.id)) {
+                        guard model.canChangeSelection else { return }
                         if model.selection.contains(app.id) {
                             model.selection.remove(app.id)
                         } else {
                             model.selection.insert(app.id)
                         }
                     }
+                    // Fixed while Mop Up works out what would be removed
+                    .disabled(!model.canChangeSelection)
                 }
             }
             .padding(.bottom, 70)
@@ -194,7 +198,9 @@ private struct SelectionBar: View {
                     .opacity(0.75)
             }
             Spacer()
-            GhostButton(title: "Clear") { model.selection = [] }
+            if model.canChangeSelection {
+                GhostButton(title: "Clear") { model.selection = [] }
+            }
             if case .planning = model.phase {
                 ProgressView().controlSize(.small)
                 Text("Checking what to remove…").font(.mono(10.5))
@@ -219,11 +225,12 @@ private struct UninstallConfirmSheet: View {
 
     var body: some View {
         let model = state.uninstall
+        let homebrew = plan.apps.filter(\.isHomebrew).map(\.name)
         VStack(alignment: .leading, spacing: 16) {
             HStack(spacing: 14) {
                 Mascot(mood: .happy, size: 56, disc: AppColors.periwinkle)
                 VStack(alignment: .leading, spacing: 3) {
-                    Text("Move to the Trash?")
+                    Text(homebrew.isEmpty ? "Move to the Trash?" : "Remove these apps?")
                         .font(.display(28, relativeTo: .title))
                         .textCase(.uppercase)
                     Text(plan.summary.last ?? "These files will go to the Trash.")
@@ -254,6 +261,9 @@ private struct UninstallConfirmSheet: View {
                             HStack {
                                 Text(app.name)
                                     .font(.mono(12, weight: .semibold))
+                                if app.isHomebrew {
+                                    TagPill(text: "Homebrew", fill: AppColors.butter)
+                                }
                                 Spacer()
                                 if let size = app.size {
                                     Text(size).font(.mono(11, weight: .medium))
@@ -285,6 +295,16 @@ private struct UninstallConfirmSheet: View {
             }
             .frame(minHeight: 140, maxHeight: 340)
 
+            if !homebrew.isEmpty {
+                // Homebrew deletes the app itself; only Mole's part goes to the Trash
+                Text("Homebrew removes \(homebrew.formatted(.list(type: .and))) itself, so \(homebrew.count == 1 ? "it" : "they") won't be in the Trash. The leftovers listed above will be.")
+                    .font(.mono(10.5))
+                    .fixedSize(horizontal: false, vertical: true)
+                    .padding(12)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .pastelCard(AppColors.butter, radius: Radius.block)
+            }
+
             HStack {
                 Text("Some apps need your password to remove.")
                     .font(.mono(9.5))
@@ -292,7 +312,7 @@ private struct UninstallConfirmSheet: View {
                 Spacer()
                 GhostButton(title: "Cancel") { model.backToList() }
                     .keyboardShortcut(.cancelAction)
-                PillButton(title: "Move to Trash", symbol: "trash.fill", circle: AppColors.coral) { model.remove() }
+                PillButton(title: homebrew.isEmpty ? "Move to Trash" : "Remove", symbol: "trash.fill", circle: AppColors.coral) { model.remove() }
                     .disabled(!running.isEmpty || state.jobs.isBusy)
                     .opacity(running.isEmpty ? 1 : 0.5)
             }
@@ -308,12 +328,14 @@ private struct UninstallConfirmSheet: View {
 private struct UninstallDone: View {
     @Environment(AppState.self) private var state
     let summary: [String]
+    let complete: Bool
+    let homebrew: [String]
 
     var body: some View {
         HStack(spacing: 24) {
-            Mascot(mood: .proud, size: 110, disc: .white.opacity(0.55))
+            Mascot(mood: complete ? .proud : .sleepy, size: 110, disc: .white.opacity(0.55))
             VStack(alignment: .leading, spacing: 8) {
-                Text("Gone!")
+                Text(complete ? "Gone!" : "Partly done")
                     .font(.display(40, relativeTo: .largeTitle))
                     .textCase(.uppercase)
                 ForEach(summary, id: \.self) { line in
@@ -322,7 +344,10 @@ private struct UninstallDone: View {
                         .opacity(0.8)
                         .fixedSize(horizontal: false, vertical: true)
                 }
-                Text("Changed your mind? Everything is in the Trash until you empty it.")
+                Text(homebrew.isEmpty
+                     ? "Changed your mind? Everything is in the Trash until you empty it."
+                     : "Homebrew deleted \(homebrew.formatted(.list(type: .and))) itself; reinstall \(homebrew.count == 1 ? "it" : "them") with Homebrew if you need \(homebrew.count == 1 ? "it" : "them") back. Everything else is in the Trash until you empty it.")
+                    .fixedSize(horizontal: false, vertical: true)
                     .font(.mono(10.5))
                     .opacity(0.8)
                 PillButton(title: "Back to apps", symbol: "arrow.left", circle: .white) {
@@ -333,7 +358,7 @@ private struct UninstallDone: View {
             .frame(maxWidth: .infinity, alignment: .leading)
         }
         .padding(26)
-        .pastelCard(AppColors.mint, radius: Radius.hero)
+        .pastelCard(complete ? AppColors.mint : AppColors.butter, radius: Radius.hero)
     }
 }
 

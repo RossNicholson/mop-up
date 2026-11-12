@@ -46,7 +46,7 @@ struct MoleEngine: Sendable {
 
     /// Runs `mole <arguments>`, calling `onLine` with each cleaned-up line as it
     /// arrives. `input` is written to stdin (for Mole's y/N prompts) and then
-    /// closed. Cancelling the calling task stops Mole.
+    /// closed. Cancelling the calling task stops Mole, and anything it started.
     func run(_ arguments: [String],
              input: String? = nil,
              onLine: (@Sendable (String) -> Void)? = nil) async throws -> Output {
@@ -68,10 +68,28 @@ struct MoleEngine: Sendable {
         return try await withTaskCancellationHandler {
             try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Output, Error>) in
                 DispatchQueue.global(qos: .userInitiated).async {
-                    do {
-                        try process.run()
-                    } catch {
-                        continuation.resume(throwing: error)
+                    let exited = DispatchSemaphore(value: 0)
+                    process.terminationHandler = { _ in exited.signal() }
+
+                    // Read as output arrives rather than blocking on the pipe:
+                    // something Mole started can outlive it and keep the pipe open
+                    let collector = LineCollector(onLine: onLine)
+                    let ended = DispatchSemaphore(value: 0)
+                    let handle = stdout.fileHandleForReading
+                    handle.readabilityHandler = { handle in
+                        let data = handle.availableData
+                        if data.isEmpty {
+                            handle.readabilityHandler = nil
+                            ended.signal()
+                        } else {
+                            collector.feed(data)
+                        }
+                    }
+
+                    // Cancelled before it started: don't start it
+                    guard box.start() else {
+                        handle.readabilityHandler = nil
+                        continuation.resume(throwing: CancellationError())
                         return
                     }
                     if let input {
@@ -79,23 +97,10 @@ struct MoleEngine: Sendable {
                         try? stdin.fileHandleForWriting.close()
                     }
 
-                    var splitter = LineSplitter()
-                    var lines: [String] = []
-                    let handle = stdout.fileHandleForReading
-                    while true {
-                        let data = handle.availableData
-                        if data.isEmpty { break }
-                        for line in splitter.feed(data) {
-                            lines.append(line)
-                            onLine?(line)
-                        }
-                    }
-                    if let last = splitter.finish() {
-                        lines.append(last)
-                        onLine?(last)
-                    }
-                    process.waitUntilExit()
-                    continuation.resume(returning: Output(exitCode: process.terminationStatus, lines: lines))
+                    exited.wait()
+                    _ = ended.wait(timeout: .now() + 2)
+                    handle.readabilityHandler = nil
+                    continuation.resume(returning: Output(exitCode: process.terminationStatus, lines: collector.finish()))
                 }
             }
         } onCancel: {
@@ -153,21 +158,75 @@ struct MoleEngine: Sendable {
     }
 }
 
-/// Lets the cancellation handler stop the process from another thread
+/// Starts the process and lets the cancellation handler stop it from
+/// another thread, even if cancelling comes first
 private final class ProcessBox: @unchecked Sendable {
     private let process: Process
     private let lock = NSLock()
+    private var cancelled = false
+    private var started = false
 
     init(_ process: Process) { self.process = process }
+
+    /// Starts the process unless it was already cancelled
+    func start() -> Bool {
+        lock.lock()
+        defer { lock.unlock() }
+        guard !cancelled else { return false }
+        do { try process.run() } catch { return false }
+        started = true
+        return true
+    }
 
     func stop() {
         lock.lock()
         defer { lock.unlock() }
-        // SIGINT first: Mole traps it, stops cleanly and still prints a summary
-        if process.isRunning { process.interrupt() }
+        cancelled = true
+        guard started, process.isRunning else { return }
+        // Mole runs as the leader of its own process group. SIGINT to the whole
+        // group is what Ctrl-C does in a terminal: Mole traps it, stops cleanly
+        // and still prints a summary, and the rm, find or brew it's waiting on
+        // stops too instead of holding the output open.
+        let group = process.processIdentifier
+        kill(-group, SIGINT)
         DispatchQueue.global().asyncAfter(deadline: .now() + 3) { [process] in
-            if process.isRunning { process.terminate() }
+            if process.isRunning { kill(-group, SIGTERM) }
         }
+        DispatchQueue.global().asyncAfter(deadline: .now() + 8) { [process] in
+            if process.isRunning { kill(-group, SIGKILL) }
+        }
+    }
+}
+
+/// Collects output lines from the reading handler's thread
+private final class LineCollector: @unchecked Sendable {
+    private let lock = NSLock()
+    private var splitter = LineSplitter()
+    private var lines: [String] = []
+    private var finished = false
+    private let onLine: (@Sendable (String) -> Void)?
+
+    init(onLine: (@Sendable (String) -> Void)?) { self.onLine = onLine }
+
+    func feed(_ data: Data) {
+        lock.lock()
+        defer { lock.unlock() }
+        guard !finished else { return }
+        for line in splitter.feed(data) {
+            lines.append(line)
+            onLine?(line)
+        }
+    }
+
+    func finish() -> [String] {
+        lock.lock()
+        defer { lock.unlock() }
+        if !finished, let last = splitter.finish() {
+            lines.append(last)
+            onLine?(last)
+        }
+        finished = true
+        return lines
     }
 }
 

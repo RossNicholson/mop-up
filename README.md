@@ -2,7 +2,7 @@
 
 # Mop Up
 
-**A free, open-source Mac cleaner with a friendly window.** Mop Up clears out caches, logs and leftovers, uninstalls apps along with the files they leave behind, tunes up macOS and shows you where your disk space has gone. Nothing is removed until you say so, and uninstalled apps go to the Trash so you can get them back.
+**A free, open-source Mac cleaner with a friendly window.** Mop Up clears out caches, logs and leftovers, uninstalls apps along with the files they leave behind, tunes up macOS and shows you where your disk space has gone. Nothing is removed until you say so, and uninstalled apps go to the Trash so you can get them back (apps installed with Homebrew are removed by Homebrew itself; their leftovers still go to the Trash).
 
 Mop Up is a native SwiftUI app for macOS 14 and later. Its cleaning engine is [Mole](https://github.com/tw93/Mole) by tw93 (see [Credits](#credits)).
 
@@ -10,7 +10,7 @@ Mop Up is a native SwiftUI app for macOS 14 and later. Its cleaning engine is [M
 
 - **Home**: your Mac's health score, free disk space, memory and processor use, updated live.
 - **Clean Up**: scans app caches, logs, browser leftovers, developer files (Xcode, npm, pip, Homebrew…) and files left behind by apps you've deleted. You see everything it found, file by file, before anything is cleaned. Big things it won't touch on its own (simulators, Time Machine snapshots) are listed separately so you can decide.
-- **Uninstall**: lists your apps by size. Pick some, see exactly which files would go, then move them to the Trash. Apps that are still open have to be quit first, so nothing unsaved is lost.
+- **Uninstall**: lists your apps by size. Pick some, see exactly which files would go, then move them to the Trash. Homebrew apps are removed with Homebrew, so the app itself doesn't go to the Trash; Mop Up says so before you confirm. Apps that are still open have to be quit first, so nothing unsaved is lost.
 - **Tune Up**: refreshes Finder, Spotlight and network caches, checks preferences and login items and repairs what it safely can. You can check first without changing anything.
 - **Disk Space**: the biggest places on your Mac. Open folders to look inside, show items in Finder or move them to the Trash.
 - **History**: every clean-up, uninstall and tune-up.

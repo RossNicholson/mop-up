@@ -31,6 +31,16 @@ final class StatusModel {
         #endif
         watchers.insert(who)
         guard watcher == nil else { return }
+        startStream()
+    }
+
+    /// Whether the live stream is running
+    var isStreaming: Bool { watcher != nil }
+
+    /// How long to wait before restarting a stream that ended on its own
+    @ObservationIgnored var restartDelay: Duration = .seconds(10)
+
+    private func startStream() {
         watcher = Task { [engine] in
             if status == nil {
                 do {
@@ -49,6 +59,12 @@ final class StatusModel {
                 status = fresh
                 error = nil
             }
+            guard !Task.isCancelled else { return }
+            // Mole stopped streaming by itself (it crashed, say). Let the slow
+            // poll take over, then try streaming again while anyone's watching.
+            watcher = nil
+            try? await Task.sleep(for: restartDelay)
+            if !Task.isCancelled, watcher == nil, !watchers.isEmpty { startStream() }
         }
     }
 
@@ -109,7 +125,7 @@ final class CleanModel {
     enum Phase {
         case idle
         case scanning
-        case preview(MoleReport, files: [String: [CleanFileList.Entry]])
+        case preview(MoleReport, files: [String: [CleanFileList.Entry]], scannedAt: Date)
         case cleaning
         case done(MoleReport)
         case failed(String)
@@ -136,12 +152,21 @@ final class CleanModel {
         }
     }
 
+    /// A preview older than this is scanned again before cleaning: the clean
+    /// runs afresh and would clean what's there now, not what was shown
+    nonisolated static let previewLifetime: TimeInterval = 15 * 60
+
+    nonisolated static func isStale(_ scannedAt: Date, now: Date = Date()) -> Bool {
+        now.timeIntervalSince(scannedAt) > previewLifetime
+    }
+
     func scan() {
         guard !isWorking else { return }
         phase = .scanning
         step = "Getting started"
         task = Task {
             do {
+                let started = Date()
                 let output = try await engine.run(["clean", "--dry-run"], onLine: progress)
                 try Task.checkCancellation()
                 let report = MoleReport.parse(output.lines)
@@ -149,8 +174,7 @@ final class CleanModel {
                     phase = .failed(Self.failure(output))
                     return
                 }
-                let listText = (try? String(contentsOf: CleanFileList.url, encoding: .utf8)) ?? ""
-                phase = .preview(report, files: CleanFileList.parse(listText))
+                phase = .preview(report, files: CleanFileList.load(writtenSince: started), scannedAt: Date())
             } catch is CancellationError {
                 phase = .idle
             } catch {
@@ -160,7 +184,13 @@ final class CleanModel {
     }
 
     func clean() {
-        guard !isWorking, jobs.begin("Cleaning up") else { return }
+        guard !isWorking else { return }
+        // Only clean from a preview that finished and is still current
+        if case let .preview(report, _, scannedAt) = phase {
+            guard report.ending == .finished else { return }
+            if Self.isStale(scannedAt) { scan(); return }
+        }
+        guard jobs.begin("Cleaning up") else { return }
         phase = .cleaning
         step = "Getting started"
         task = Task {
@@ -189,7 +219,7 @@ final class CleanModel {
         }
     }
 
-    static func failure(_ output: MoleEngine.Output) -> String {
+    nonisolated static func failure(_ output: MoleEngine.Output) -> String {
         let tail = output.lines.suffix(3).joined(separator: " ").trimmingCharacters(in: .whitespaces)
         return tail.isEmpty ? "The cleaning engine stopped without a report (code \(output.exitCode))." : tail
     }
@@ -208,7 +238,8 @@ final class TuneUpModel {
         case idle
         case working(preview: Bool)
         case preview(MoleReport)
-        case done(MoleReport)
+        /// `finished` is false when it was stopped or didn't get to the end
+        case done(MoleReport, finished: Bool)
         case failed(String)
     }
 
@@ -226,6 +257,23 @@ final class TuneUpModel {
     var isWorking: Bool {
         if case .working = phase { return true }
         return false
+    }
+
+    /// Mole prints its summary only when a run gets to the end: an
+    /// interrupted one exits with 130 and no summary
+    static func outcome(_ report: MoleReport, output: MoleEngine.Output, dryRun: Bool, cancelled: Bool) -> Phase {
+        let finished = !cancelled && !report.summary.isEmpty && output.exitCode == 0
+        if dryRun {
+            if cancelled { return .idle }
+            if finished && !report.sections.isEmpty { return .preview(report) }
+            return .failed(report.sections.isEmpty ? CleanModel.failure(output)
+                           : "The check didn't finish. \(CleanModel.failure(output))")
+        }
+        // A real tune-up may have changed things before it stopped: say what it did
+        if report.sections.isEmpty && !finished {
+            return cancelled ? .idle : .failed(CleanModel.failure(output))
+        }
+        return .done(report, finished: finished)
     }
 
     func preview() { run(dryRun: true) }
@@ -247,11 +295,7 @@ final class TuneUpModel {
                     Task { @MainActor in self.step = title }
                 }
                 let report = MoleReport.parse(output.lines)
-                if report.sections.isEmpty {
-                    phase = .failed(CleanModel.failure(output))
-                } else {
-                    phase = dryRun ? .preview(report) : .done(report)
-                }
+                phase = Self.outcome(report, output: output, dryRun: dryRun, cancelled: Task.isCancelled)
             } catch is CancellationError {
                 phase = .idle
             } catch {
@@ -276,9 +320,12 @@ final class UninstallModel {
     enum Phase {
         case browsing
         case planning
-        case confirm(UninstallPlan)
+        /// The plan, and the apps it was made for: only these can be removed
+        case confirm(UninstallPlan, apps: [InstalledApp])
         case removing
-        case done([String])
+        /// Mole's summary; `complete` is false if some apps couldn't be removed.
+        /// `homebrew` names the apps Homebrew removed, which aren't in the Trash.
+        case done([String], complete: Bool, homebrew: [String])
         case failed(String)
     }
 
@@ -314,6 +361,12 @@ final class UninstallModel {
 
     var selectedApps: [InstalledApp] { apps.filter { selection.contains($0.id) } }
 
+    /// The list can only be changed while browsing, not while a plan is made or shown
+    var canChangeSelection: Bool {
+        if case .browsing = phase { return true }
+        return false
+    }
+
     func load() async {
         guard !isLoading else { return }
         isLoading = true
@@ -332,40 +385,141 @@ final class UninstallModel {
 
     /// Asks Mole what it would remove, without removing anything
     func plan() {
-        let names = selectedApps.map(\.uninstallName)
-        guard !names.isEmpty else { return }
+        let chosen = selectedApps
+        guard !chosen.isEmpty, canChangeSelection else { return }
+        let terms: [String]
+        switch Self.terms(for: chosen, among: apps) {
+        case let .success(found): terms = found
+        case let .failure(problem):
+            phase = .failed(problem.message)
+            return
+        }
         phase = .planning
         Task {
             do {
                 // Mole asks "Proceed? [y/N]" then "Enter confirm" even in a dry run
-                let output = try await engine.run(["uninstall", "--dry-run"] + names, input: "y\n\n")
+                let output = try await engine.run(["uninstall", "--dry-run"] + terms, input: "y\n\n")
                 let plan = UninstallPlan.parse(output.lines)
-                phase = plan.apps.isEmpty ? .failed(CleanModel.failure(output)) : .confirm(plan)
+                if plan.apps.isEmpty {
+                    phase = .failed(Self.failureMessage(output))
+                } else if let problem = Self.mismatch(plan, chosen: chosen) {
+                    phase = .failed(problem)
+                } else {
+                    phase = .confirm(plan, apps: chosen)
+                }
             } catch {
                 phase = .failed(error.localizedDescription)
             }
         }
     }
 
-    /// Moves the selected apps and their leftovers to the Trash
+    /// Removes the apps in the plan the user confirmed, and their leftovers
     func remove() {
-        let chosen = selectedApps
-        guard !chosen.isEmpty, jobs.begin("Uninstalling") else { return }
+        guard case let .confirm(_, chosen) = phase, !chosen.isEmpty, jobs.begin("Uninstalling") else { return }
         phase = .removing
         step = chosen.map(\.name).formatted(.list(type: .and))
         Task {
             defer { jobs.end() }
             do {
-                let output = try await engine.run(["uninstall"] + chosen.map(\.uninstallName), input: "y\n\n")
-                let summary = UninstallPlan.parse(output.lines).summary
-                selection = []
-                phase = .done(summary.isEmpty ? ["Done."] : summary)
+                // Mole picks apps by name, so check against a fresh list that
+                // the names still point at exactly these apps
+                let fresh = try await engine.json([InstalledApp].self, ["uninstall", "--list"])
+                let terms: [String]
+                switch Self.terms(for: chosen, among: fresh) {
+                case let .success(found): terms = found
+                case let .failure(problem):
+                    phase = .failed(problem.message + " Nothing was removed.")
+                    await load()
+                    return
+                }
+                let output = try await engine.run(["uninstall"] + terms, input: "y\n\n")
+                phase = Self.outcome(output, removing: chosen)
+                if case .done = phase { selection = [] }
                 onDiskChanged?()
                 await load()
             } catch {
                 phase = .failed(error.localizedDescription)
             }
         }
+    }
+
+    struct MatchProblem: Error {
+        let message: String
+    }
+
+    /// The name to give Mole for each app. Mole takes the first app whose name
+    /// or .app folder name matches exactly, and falls back to any app whose
+    /// name contains it, so each name must match this app and no other. The
+    /// folder name comes first: it's what's on disk (a cask token like
+    /// "google-chrome" matches nothing).
+    nonisolated static func terms(for chosen: [InstalledApp], among all: [InstalledApp]) -> Result<[String], MatchProblem> {
+        var terms: [String] = []
+        for app in chosen {
+            guard all.contains(where: { $0.path == app.path }) else {
+                return .failure(MatchProblem(message: "\(app.name) isn't installed any more. Refresh the list and try again."))
+            }
+            let term = [app.folderName, app.name].first { candidate in
+                let key = candidate.lowercased()
+                // Mole would read a leading "-" as an option
+                guard !candidate.isEmpty, !candidate.hasPrefix("-") else { return false }
+                let matches = all.filter { $0.name.lowercased() == key || $0.folderName.lowercased() == key }
+                return matches.map(\.path) == [app.path]
+            }
+            guard let term else {
+                return .failure(MatchProblem(message: "Another app has the same name as \(app.name), so Mop Up can't be sure which one would be removed. Move the one you don't want to the Trash in Finder."))
+            }
+            terms.append(term)
+        }
+        return .success(terms)
+    }
+
+    /// Why Mole's plan isn't exactly the apps the user picked, if it isn't
+    nonisolated static func mismatch(_ plan: UninstallPlan, chosen: [InstalledApp]) -> String? {
+        let home = FileManager.default.homeDirectoryForCurrentUser.path
+        let expand = { (path: String) in path.hasPrefix("~/") ? home + path.dropFirst() : path }
+        var unclaimed = plan.apps.map { Set($0.files.map { expand($0.path) }) }
+        var missing: [String] = []
+        for app in chosen {
+            if let index = unclaimed.firstIndex(where: { $0.contains(app.path) }) {
+                unclaimed.remove(at: index)
+            } else {
+                missing.append(app.name)
+            }
+        }
+        guard !missing.isEmpty || !unclaimed.isEmpty else { return nil }
+        let detail = missing.isEmpty
+            ? "It also listed apps you didn't pick."
+            : "It didn't include \(missing.formatted(.list(type: .and)))."
+        return "Mop Up's cleaning engine planned something different from the apps you picked, so nothing will be removed. \(detail) Refresh the list and try again."
+    }
+
+    /// What a real uninstall did, from Mole's summary. Mole exits with 0 even
+    /// when it removed nothing, so the summary is what counts.
+    nonisolated static func outcome(_ output: MoleEngine.Output, removing chosen: [InstalledApp]) -> Phase {
+        let summary = UninstallPlan.parse(output.lines).summary
+        guard let headline = summary.first?.lowercased() else {
+            return .failed(failureMessage(output))
+        }
+        if summary.contains(where: { $0.contains("No applications were uninstalled") }) {
+            return .failed(summary.dropFirst().joined(separator: " "))
+        }
+        let complete = headline.contains("complete") && !headline.contains("incomplete")
+        return .done(summary, complete: complete, homebrew: chosen.filter(\.isHomebrew).map(\.name))
+    }
+
+    /// Mole's reason for stopping before its summary, in plain words
+    nonisolated static func failureMessage(_ output: MoleEngine.Output) -> String {
+        let text = output.text
+        if text.contains("No matching applications found") {
+            return "Mop Up's cleaning engine couldn't find those apps any more, so nothing was removed. Refresh the list and try again."
+        }
+        if text.contains("Admin access denied") {
+            return "Removing these needs your password, and macOS didn't get it. Nothing was removed."
+        }
+        if text.contains("Aborted.") {
+            return "The uninstall stopped before removing anything."
+        }
+        return CleanModel.failure(output)
     }
 
     func backToList() { phase = .browsing }

@@ -24,8 +24,8 @@ struct TuneUpView: View {
             case let .preview(report):
                 TuneUpSummary(report: report, preview: true)
                 TuneUpChecks(report: report)
-            case let .done(report):
-                TuneUpSummary(report: report, preview: false)
+            case let .done(report, finished):
+                TuneUpSummary(report: report, preview: false, finished: finished)
                 TuneUpChecks(report: report)
             case let .failed(message):
                 MessageCard(title: "Something went wrong", message: message, mood: .sleepy, fill: AppColors.peach)
@@ -39,14 +39,21 @@ private struct TuneUpSummary: View {
     @Environment(AppState.self) private var state
     let report: MoleReport
     let preview: Bool
+    var finished = true
 
     var body: some View {
         HStack(spacing: 24) {
-            Mascot(mood: preview ? .happy : .proud, size: 110, disc: .white.opacity(0.55))
+            Mascot(mood: preview ? .happy : finished ? .proud : .sleepy, size: 110, disc: .white.opacity(0.55))
             VStack(alignment: .leading, spacing: 6) {
-                Text(preview ? "Here's the plan" : "All tuned up")
+                Text(preview ? "Here's the plan" : finished ? "All tuned up" : "Stopped partway")
                     .font(.display(34, relativeTo: .largeTitle))
                     .textCase(.uppercase)
+                if !preview && !finished {
+                    Text("The steps below ran before it stopped. Run it again to finish the rest.")
+                        .font(.mono(11))
+                        .opacity(0.8)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
                 ForEach(report.summary.dropFirst().filter { !$0.hasPrefix("Run without") }, id: \.self) { line in
                     Text(line.replacingOccurrences(of: " | ", with: " · "))
                         .font(.mono(11))

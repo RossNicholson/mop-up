@@ -41,6 +41,19 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
         !state.settings.showInMenuBar
     }
 
+    /// Quitting mid-clean or mid-uninstall would leave it half done with no
+    /// summary, so ask first
+    func applicationShouldTerminate(_ sender: NSApplication) -> NSApplication.TerminateReply {
+        guard let job = state.jobs.running else { return .terminateNow }
+        let alert = NSAlert()
+        alert.messageText = "Mop Up is still \(job.lowercased())"
+        alert.informativeText = "Quitting now would stop it partway, and you wouldn't see what was done. Let it finish first?"
+        alert.addButton(withTitle: "Keep Going")
+        alert.addButton(withTitle: "Quit Anyway")
+        NSApp.activate(ignoringOtherApps: true)
+        return alert.runModal() == .alertSecondButtonReturn ? .terminateNow : .terminateCancel
+    }
+
     // MARK: - Main window
 
     /// Brings the window forward, optionally on a given screen

@@ -21,8 +21,8 @@ struct CleanView: View {
                 ) { model.scan() }
             case .scanning:
                 WorkingCard(title: "Looking for junk", detail: model.step, fill: AppColors.peach) { model.cancel() }
-            case let .preview(report, files):
-                CleanPreview(report: report, files: files)
+            case let .preview(report, files, scannedAt):
+                CleanPreview(report: report, files: files, scannedAt: scannedAt)
             case .cleaning:
                 WorkingCard(title: "Mopping up", detail: model.step, fill: AppColors.mint) { model.cancel() }
             case let .done(report):
@@ -72,6 +72,7 @@ private struct CleanPreview: View {
     @Environment(AppState.self) private var state
     let report: MoleReport
     let files: [String: [CleanFileList.Entry]]
+    let scannedAt: Date
 
     var body: some View {
         let toClean = report.sections.filter { !$0.actions.isEmpty }
@@ -82,7 +83,14 @@ private struct CleanPreview: View {
         let total = report.summaryValue("Potential space").map(ByteSize.tidy) ?? ByteSize.format(toClean.map(\.bytes).reduce(0, +))
         let itemCount = report.summaryValue("Items")
 
-        if toClean.isEmpty {
+        if report.ending != .finished {
+            // Cleaning runs afresh and would also clean what this scan never got to
+            MessageCard(title: "The scan didn't finish",
+                        message: [report.stopReason, "Mop Up only cleans what you've seen, so scan again to get the full list."]
+                            .compactMap { $0 }.joined(separator: " "),
+                        mood: .sleepy, fill: AppColors.peach)
+            GhostButton(title: "Scan again", symbol: "arrow.clockwise") { state.clean.scan() }
+        } else if toClean.isEmpty {
             MessageCard(title: "Already spotless", message: "Mop Up didn't find anything worth cleaning right now.", mood: .proud)
             GhostButton(title: "Scan again", symbol: "arrow.clockwise") { state.clean.scan() }
         } else {
@@ -99,12 +107,25 @@ private struct CleanPreview: View {
                         .opacity(0.8)
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
-                VStack(alignment: .trailing, spacing: 10) {
-                    PillButton(title: "Clean up \(total)", symbol: "sparkles", circle: AppColors.mint) {
-                        state.clean.clean()
+                TimelineView(.periodic(from: .now, by: 30)) { context in
+                    let stale = CleanModel.isStale(scannedAt, now: context.date)
+                    VStack(alignment: .trailing, spacing: 10) {
+                        if stale {
+                            // The clean would act on what's there now, not on this list
+                            Text("This scan is over 15 minutes old.")
+                                .font(.mono(10.5))
+                                .opacity(0.8)
+                            PillButton(title: "Scan again", symbol: "arrow.clockwise", circle: AppColors.mint) {
+                                state.clean.scan()
+                            }
+                        } else {
+                            PillButton(title: "Clean up \(total)", symbol: "sparkles", circle: AppColors.mint) {
+                                state.clean.clean()
+                            }
+                            .disabled(state.jobs.isBusy)
+                            GhostButton(title: "Scan again", symbol: "arrow.clockwise") { state.clean.scan() }
+                        }
                     }
-                    .disabled(state.jobs.isBusy)
-                    GhostButton(title: "Scan again", symbol: "arrow.clockwise") { state.clean.scan() }
                 }
             }
             .padding(24)
@@ -309,15 +330,19 @@ private struct CleanDone: View {
     let report: MoleReport
 
     var body: some View {
-        let cancelled = report.headline?.localizedCaseInsensitiveContains("cancel") == true
-            || report.headline?.localizedCaseInsensitiveContains("interrupt") == true
+        let ending = report.ending
         let freed = report.summaryValue("Tracked cleanup")
         let free = report.summaryValue("Free space")
+        let title = switch ending {
+        case .finished: "All clean!"
+        case .stopped: "Stopped"
+        case .incomplete: "Partly cleaned"
+        }
 
         HStack(spacing: 24) {
-            Mascot(mood: cancelled ? .sleepy : .proud, size: 120, disc: .white.opacity(0.55))
+            Mascot(mood: ending == .finished ? .proud : .sleepy, size: 120, disc: .white.opacity(0.55))
             VStack(alignment: .leading, spacing: 8) {
-                Text(cancelled ? "Stopped" : "All clean!")
+                Text(title)
                     .font(.display(40, relativeTo: .largeTitle))
                     .textCase(.uppercase)
                 if let freed {
@@ -330,7 +355,7 @@ private struct CleanDone: View {
                         .font(.mono(10.5))
                         .opacity(0.8)
                 }
-                if freed == nil, free == nil, report.summary.count <= 1 {
+                if ending == .finished, freed == nil, free == nil, report.summary.count <= 1 {
                     Text("Your Mac was already clean.")
                         .font(.mono(11))
                         .opacity(0.8)
@@ -347,7 +372,7 @@ private struct CleanDone: View {
             .frame(maxWidth: .infinity, alignment: .leading)
         }
         .padding(26)
-        .pastelCard(AppColors.mint, radius: Radius.hero)
+        .pastelCard(ending == .finished ? AppColors.mint : AppColors.butter, radius: Radius.hero)
         .task { await state.status.refresh() }
     }
 }

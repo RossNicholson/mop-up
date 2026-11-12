@@ -125,6 +125,8 @@ struct InstalledApp: Decodable, Sendable, Identifiable, Hashable {
     var id: String { path }
     var sizeBytes: Int64? { size.flatMap(ByteSize.parse) }
     var isHomebrew: Bool { source == "Homebrew" }
+    /// "Google Chrome" for /Applications/Google Chrome.app
+    var folderName: String { ((path as NSString).lastPathComponent as NSString).deletingPathExtension }
 
     enum CodingKeys: String, CodingKey {
         case name, source, path, size
