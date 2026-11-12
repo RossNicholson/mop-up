@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0F6172F953D214E579DC2003 /* SafetyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28D0C62EF664EC83D99C2AF7 /* SafetyTests.swift */; };
 		1092EF3C6A72FA07AD96C2E7 /* CleanView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D8C1F39A462696417A272F /* CleanView.swift */; };
 		192F9742DD4B03FE3223123D /* TuneUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C7A96D9FAD28D14345C0CFE /* TuneUpView.swift */; };
 		1C3582C78650DD581D19DA1C /* Mascot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47BA10E8BC848A2BA593FEE9 /* Mascot.swift */; };
@@ -49,6 +50,7 @@
 		0AC5D447BB03743E29070C64 /* MopUpApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MopUpApp.swift; sourceTree = "<group>"; };
 		0C044283857737B8C59688D9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		12CC377E67E34DB4A93E78BA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		28D0C62EF664EC83D99C2AF7 /* SafetyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafetyTests.swift; sourceTree = "<group>"; };
 		2ECBDDF051597B1CB81928C1 /* FeatureModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureModels.swift; sourceTree = "<group>"; };
 		2F7BA3271834D7677E9F4857 /* EngineTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EngineTests.swift; sourceTree = "<group>"; };
 		3DD28BB43222170300B7AB58 /* HouseStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HouseStyle.swift; sourceTree = "<group>"; };
@@ -94,6 +96,7 @@
 			children = (
 				2F7BA3271834D7677E9F4857 /* EngineTests.swift */,
 				FEF7BFDC2E130C907F3BDA45 /* ReportParserTests.swift */,
+				28D0C62EF664EC83D99C2AF7 /* SafetyTests.swift */,
 				432453F5EDD094D67AD80DD8 /* ScreenshotTests.swift */,
 				BA17EC05495C9A007F6CE951 /* SpaceModelTests.swift */,
 			);
@@ -335,6 +338,7 @@
 			files = (
 				82CB21214A5FF0C908341DBC /* EngineTests.swift in Sources */,
 				D5C944E405353BF330036206 /* ReportParserTests.swift in Sources */,
+				0F6172F953D214E579DC2003 /* SafetyTests.swift in Sources */,
 				7EDFA72B1A93E98CA8B5A674 /* ScreenshotTests.swift in Sources */,
 				E49E57D781D641ED86F4E0A2 /* SpaceModelTests.swift in Sources */,
 			);
